@@ -4,6 +4,21 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import firebase from 'firebase/app'
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCOfMu-wdfqKz-elouFkwpCRg1VnXdHKHY",
+  authDomain: "fir-fotos-90fbd.firebaseapp.com",
+  databaseURL: "https://fir-fotos-90fbd.firebaseio.com",
+  projectId: "fir-fotos-90fbd",
+  storageBucket: "fir-fotos-90fbd.appspot.com",
+  messagingSenderId: "516468745664",
+  appId: "1:516468745664:web:7c67372afe3f44278a1425"
+};
+
+firebase.initializeApp(firebaseConfig)
+
 ReactDOM.render(
   <React.StrictMode>
     <App />

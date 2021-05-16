@@ -12,16 +12,18 @@ const writeImageInDb = async (data)=>{
    
     const doc = firebase.firestore().collection('images').doc()
 
-    await doc.set({
+    const dataObj = {
         ...data,
         id: doc.id,
         images:{
             frontImage,
             backImage
         }
-    })
+    }
 
-    return doc.id
+    await doc.set(dataObj)
+
+    return dataObj
 
 }
 

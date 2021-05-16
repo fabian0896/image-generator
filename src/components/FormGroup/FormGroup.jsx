@@ -2,7 +2,7 @@ import React from 'react'
 import {useFormik} from 'formik'
 import numeral from 'numeral'
 
-import {writeImageInDb} from '../../services'
+import {writeImageInDb, createImage} from '../../services'
 
 const FormGroup = () => {
 
@@ -18,9 +18,17 @@ const FormGroup = () => {
         },
         onSubmit: (values, actions) => {
             console.log(values)
-            writeImageInDb(values).then(data => {
-                console.log(data)
-            })
+            writeImageInDb(values)
+                .then(data => {
+                    return data
+                })
+                .then(payload =>{
+                    return createImage(payload)
+                })
+                .then(res => {
+                    console.log(res)
+                })
+        
         }
     })
 

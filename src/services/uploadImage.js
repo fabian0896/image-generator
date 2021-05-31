@@ -17,4 +17,5 @@ const uploadImage = (file, folder='images') => {
 }   
 
 
+
 export default uploadImage

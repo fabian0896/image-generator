@@ -1,41 +1,47 @@
-import React from 'react'
-import {useFormik} from 'formik'
+import React, { useEffect, useRef } from 'react'
+import { useFormik } from 'formik'
 import numeral from 'numeral'
 
-import {writeImageInDb, createImage} from '../../services'
+import { writeImageInDb, createImage } from '../../services'
+import Imaginator from '../../services/imaginator'
+import logoSVG from '../../SVG/logo-w.svg'
+import dividerSVG from '../../SVG/divider.svg'
+import whatsappSVG from '../../SVG/whatsapp.svg'
 
 const FormGroup = () => {
+    const canvas = useRef()
+    useEffect(() => {
+        const imaginator = new Imaginator('c', 1140, 840)
+        imaginator.init({
+            productName: 'Faja Latex Clasica 3 Hileras',
+            ref: '1934-4',
+            price: '$82.000',
+            whatsapp: '+57 321 737 8301',
+            dividerSVG: dividerSVG,
+            logoSVG: logoSVG,
+            whatsappSVG: whatsappSVG
+        })
+        canvas.current = imaginator
+        console.log("hola mundo")
+    }, [])
 
     const formik = useFormik({
-        initialValues:{
-            name: '',
+        initialValues: {
+            productName: '',
             ref: '',
             price: 0,
-            images:{
-                frontImage: null,
-                backImage: null
-            }
         },
         onSubmit: (values, actions) => {
-            console.log(values)
-            writeImageInDb(values)
-                .then(data => {
-                    return data
-                })
-                .then(payload =>{
-                    return createImage(payload)
-                })
-                .then(res => {
-                    console.log(res)
-                })
-        
+            canvas.current.update({
+                ...values,
+                price: numeral(values.price).format('$0,0')
+            })
         }
     })
 
     const handleChangeImage = (e) => {
         const file = e.target.files[0]
-        const name = e.target.name
-        formik.setFieldValue(name, file)
+        canvas.current.addImage(file)
     }
 
     const handleChangePrice = e => {
@@ -51,75 +57,46 @@ const FormGroup = () => {
 
                 <div className="col-4">
                     <div className="mb-3">
-                        <label htmlFor="name" className="form-label">Nombre De La Prenda</label>
+                        <label htmlFor="productName" className="form-label">Nombre De La Prenda</label>
                         <input
-                            value={formik.values.name} 
+                            value={formik.values.productName}
                             onChange={formik.handleChange}
-                            name="name"
-                            type="text" 
-                            className="form-control" 
-                            id="name"/>
+                            name="productName"
+                            type="text"
+                            className="form-control"
+                            id="name" />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="ref" className="form-label">Referencia</label>
                         <input
-                            value={formik.values.ref} 
+                            value={formik.values.ref}
                             onChange={formik.handleChange}
                             name="ref"
-                            type="text" 
-                            className="form-control" 
-                            id="ref"/>
+                            type="text"
+                            className="form-control"
+                            id="ref" />
                     </div>
                     <div className="mb-3">
                         <label htmlFor="price" className="form-label">Valor</label>
                         <input
-                            value={numeral(formik.values.price).format("$0,0")} 
+                            value={numeral(formik.values.price).format("$0,0")}
                             onChange={handleChangePrice}
-                            name="price" 
-                            type="text" 
-                            className="form-control" 
+                            name="price"
+                            type="text"
+                            className="form-control"
                             id="price" />
                     </div>
                     <button type="submit" className="btn btn-primary mt-3">Generar Imagen</button>
                 </div>
-                <div className="col-4">
+                <div className="col-8">
                     <div className="mb-3">
-                        <label htmlFor="frontImage" className="form-label">Imagen Frontal</label>
-                        <input
-                            accept="image/png, image/gif, image/jpeg" 
-                            name="images.frontImage" 
-                            onChange={handleChangeImage} 
-                            className="form-control" 
-                            type="file" 
-                            id="frontImage"/>
+                        <label htmlFor="formFile" className="form-label">Añadir Imagen</label>
+                        <input onChange={handleChangeImage} className="form-control" accept="image/*" type="file" id="formFile" />
                     </div>
-                    {
-                        formik.values.images.frontImage &&
-                        <img 
-                            src={URL.createObjectURL(formik.values.images.frontImage)}
-                            alt={formik.values.name} 
-                            className="rounded img-thumbnail img-fluid" />
-                    }
+                    <canvas id="c"></canvas>
                 </div>
-                <div className="col-4">
-                    <div className="mb-3">
-                        <label htmlFor="backImage" className="form-label">Imagen Trasera</label>
-                        <input
-                            onChange={handleChangeImage}
-                            accept="image/png, image/gif, image/jpeg" 
-                            name="images.backImage" 
-                            className="form-control" 
-                            type="file"  
-                            id="backImage"/>
-                    </div>
-                    {
-                        formik.values.images.backImage &&
-                        <img 
-                            src={URL.createObjectURL(formik.values.images.backImage)}
-                            alt={formik.values.name} 
-                            className="rounded img-thumbnail img-fluid" />
-                    }
-                </div>
+
+
             </div>
         </form>
     )

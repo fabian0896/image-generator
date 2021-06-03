@@ -645,7 +645,9 @@ export class BackgoundRemover {
         if(!this.currentImage) throw new Error('No hay imagenes cargadas')
         this.range.removeEventListener('change', this.chanegeValue)
         this.canvas.forEachObject(obj => this.canvas.remove(obj))
-        const url = this.currentImage.toDataURL()
+        const url = this.currentImage.toDataURL({
+            multiplier: 1
+        })
         const blob = await fetch(url).then(res => res.blob())
         this.currentImage = null
         URL.revokeObjectURL(url)

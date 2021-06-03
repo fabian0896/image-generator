@@ -4,20 +4,20 @@
     background: rebeccapurple;
     border-radius: 3px;
     box-shadow: 3px 3px 15px rgba(0, 0, 0, .3);
-    transition: .3s;
+    transition: .2s;
     cursor: pointer;
     margin-bottom: 10px;
 }
 
 .color-container.selected{
-    border: 2px solid black;
-    transform: scale(1.3);
+    border: 1px solid #333;
+    transform: scale(1.2);
     box-shadow: 5px 5px 10px rgba(0, 0, 0, .5);
 }
 
 .color-container:hover{
     box-shadow: 5px 5px 10px rgba(0, 0, 0, .5);
-    border: 2px solid black
+    border: 1px solid #333
 }
 
 .other-color-container{
@@ -29,6 +29,12 @@
     cursor: pointer;
     transition: .3s;  
     font-weight: 500;
+}
+
+.other-color-container.selected{
+    border: 1px solid #333;
+    transform: scale(1.05);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, .5);
 }
 
 .other-color-container > span{

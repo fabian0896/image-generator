@@ -33,7 +33,7 @@ const FormGroup = () => {
 
     return (
         <div className="row">
-            <div className="col-4">
+            <div className="col-md-4 col-sm-12">
                 {
                     imageMode ?
                         <ImageRemover
@@ -46,7 +46,7 @@ const FormGroup = () => {
                         />
                 }
             </div>
-            <div className="col-8">
+            <div className="col-md-8 col-sm-12">
                 <canvas id="c"></canvas>
             </div>
         </div>

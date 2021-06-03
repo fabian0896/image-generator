@@ -1,0 +1,58 @@
+.color-container{
+    height: 30px;
+    width: 100%;
+    background: rebeccapurple;
+    border-radius: 3px;
+    box-shadow: 3px 3px 15px rgba(0, 0, 0, .3);
+    transition: .3s;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.color-container.selected{
+    border: 2px solid black;
+    transform: scale(1.3);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, .5);
+}
+
+.color-container:hover{
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, .5);
+    border: 2px solid black
+}
+
+.other-color-container{
+    height: 40px;
+    border-radius: 3px;
+    width: 100%;
+    position: relative;
+    border: 2px dashed #888;
+    cursor: pointer;
+    transition: .3s;  
+    font-weight: 500;
+}
+
+.other-color-container > span{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: .3s;
+}
+
+.other-color-container:hover{
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, .5);
+}
+
+.color-input{
+    visibility: hidden;
+}
+
+.chekbox-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.metalic{
+    background: linear-gradient(60deg, #B81414 0%, #EB4747 15%, #B81414 30%, #EB4747 41%, #B81414 60%, #EB4747 71%, #EB4747 86%, #B81414 100%);
+}

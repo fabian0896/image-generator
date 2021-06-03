@@ -1,3 +1,5 @@
 export {default as Header} from './Header'
 export {default as Content} from './Content'
 export {default as FormGroup} from './FormGroup'
+export {default as ImageRemover} from './ImageRemover'
+export {default as ProductForm} from './ProductForm'

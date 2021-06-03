@@ -5,10 +5,10 @@ const Header = () => {
     return (
         <nav className="navbar navbar-light bg-light">
             <div className="container">
-                <a className="navbar-brand" href="#">
+                <span className="navbar-brand">
                     <img src={logo} alt="logo" width="40" height="40" />
                     Angel Slim
-                </a>
+                </span>
             </div>
         </nav>
     )

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
+import {useFormik} from 'formik'
 
 import { Imaginator } from '../../services/imaginator'
 import { ImageRemover, ProductForm } from '../../components'
@@ -18,6 +19,22 @@ const FormGroup = () => {
         canvas.current = imaginator
         console.log("hola mundo")
     }, [])
+
+    
+    const formik = useFormik({
+        initialValues: {
+            productName: '',
+            ref: '',
+            price: 0,
+            phone: '+57',
+            color: null,
+            category: ''
+        },
+        onSubmit: (values) => {
+            console.log('Aqui hay que actualizar los datos del canvas', values)
+        }
+    })
+
 
     const handleSubmitInfo = (values) => {
         canvas.current.update(values)
@@ -41,6 +58,7 @@ const FormGroup = () => {
                             onCancel={handelChangeImageMode(false)} />
                         :
                         <ProductForm
+                            formik={formik}
                             onImageMode={handelChangeImageMode(true)}
                             onSubmit={handleSubmitInfo}
                         />

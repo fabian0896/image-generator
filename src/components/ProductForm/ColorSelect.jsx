@@ -4,13 +4,13 @@ import { Imaginator } from '../../services/imaginator'
 import clsx from 'clsx'
 import Color from 'color'
 
-const OtherColorSelect = ({onChange, selected}) => {
+const OtherColorSelect = ({onChange, selected, color}) => {
     const [colorValue, setColorValue] = useState('#eeeeee')
     const [textColor, setTextColor] = useState('#555')
-    const [checkbox, setCheckbox] = useState(false)
-    const [originalColor, setOriginalColor] = useState('#eeeeee')
+    const [checkbox, setCheckbox] = useState(color?.metalic || false)
+    const [originalColor, setOriginalColor] = useState(color?.value || '#eeeeee' )
     const [colorObject, setColorObject] = useState({value: '#eeeeee', metalic: false})
-
+    const [customTimeOut, setCustomTimeOut] = useState(true)
 
     useEffect(() => {
         const color = originalColor
@@ -30,6 +30,7 @@ const OtherColorSelect = ({onChange, selected}) => {
         }
         onChange && onChange(newColor)
         setColorObject(newColor)
+
     }, [originalColor, checkbox])
 
     const handleChangeCheckbox = e => {
@@ -54,7 +55,7 @@ const OtherColorSelect = ({onChange, selected}) => {
                 style={{ background: colorValue, color: textColor, border: `1px dashed ${textColor}` }} 
                 htmlFor="colorSelector" 
                 className={clsx("other-color-container", {selected: selected(colorObject)})}>
-                <span>Otro color</span>
+                <span>Seleccionar otro color</span>
                 <input
                     onChange={handleChangeColor}
                     className="color-input"
@@ -104,40 +105,9 @@ const ColorComponent = ({ color, selected, onSelected }) => {
 }
 
 
-const ColorSelect = ({value, onChange}) => {
+const ColorSelect = ({value, onChange, colors}) => {
 
     const [selection, setSelection] = useState(null)
-
-    const colors = [
-        {
-            value: 'red',
-            metalic: false
-        },
-        {
-            value: 'blue',
-            metalic: false
-        },
-        {
-            value: 'purple',
-            metalic: false
-        },
-        {
-            value: 'yellow',
-            metalic: true
-        },
-        {
-            value: 'orange',
-            metalic: false
-        },
-        {
-            value: '#563D7C',
-            metalic: true
-        },
-        {
-            value: 'grey',
-            metalic: true
-        },
-    ]
 
     const handleColorSelect = (color) => {
         setSelection(color)
@@ -170,6 +140,7 @@ const ColorSelect = ({value, onChange}) => {
                 }
                 <div className="col-12">
                     <OtherColorSelect
+                        color={value}
                         selected={ actualColor => sameColor(actualColor, value? value : selection)}
                         onChange={handleColorSelect} />
                 </div>

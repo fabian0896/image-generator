@@ -1,33 +1,43 @@
-import React from 'react'
-import { useFormik } from 'formik'
+import React, { useCallback } from 'react'
 import numeral from 'numeral'
-import parsePhoneNumber from 'libphonenumber-js'
+
 
 import ColorSelect from './ColorSelect'
 
 import './ProductForm.css'
 
-const ProductForm = (props) => {
+const colors = [
+    {
+        value: 'red',
+        metalic: false
+    },
+    {
+        value: 'blue',
+        metalic: false
+    },
+    {
+        value: 'purple',
+        metalic: false
+    },
+    {
+        value: 'yellow',
+        metalic: true
+    },
+    {
+        value: 'orange',
+        metalic: false
+    },
+    {
+        value: '#563D7C',
+        metalic: true
+    },
+    {
+        value: 'grey',
+        metalic: true
+    },
+]
 
-    const formik = useFormik({
-        initialValues: {
-            productName: '',
-            ref: '',
-            price: 0,
-            phone: '+57',
-            color: null
-        },
-        onSubmit: (values) => {
-            console.log('Aqui hay que actualizar los datos del canvas', values)
-            props.onSubmit && props.onSubmit({
-                ...values,
-                price: numeral(values.price).format('$0,0'),
-                phone: parsePhoneNumber(values.phone, 'CO').format('INTERNATIONAL')
-            })
-        }
-    })
-
-
+const ProductForm = ({formik,...props}) => {
 
     const handleChangePrice = e => {
         const value = e.target.value
@@ -40,9 +50,10 @@ const ProductForm = (props) => {
         props.onImageMode && props.onImageMode()
     }
 
-    const handleChangeColor = (color) => {
+    const handleChangeColor = useCallback((color) => {
         formik.setFieldValue('color', color)
-    }
+    }, [])
+     
 
     return (
         <form onSubmit={formik.handleSubmit}>
@@ -79,7 +90,7 @@ const ProductForm = (props) => {
             
             <div className="mb-3">
                 <label htmlFor="category" className="form-label">Categoria</label>
-                <select id="category" className="form-select  mb-3">
+                <select value={formik.values.category} onChange={formik.handleChange} name="category" id="category" className="form-select  mb-3">
                     <option selected>selecciona una categoria</option>
                     <option value="1">One</option>
                     <option value="2">Two</option>
@@ -99,7 +110,8 @@ const ProductForm = (props) => {
                     id="phone" />
             </div>
 
-            <ColorSelect 
+            <ColorSelect
+                colors={colors} 
                 onChange={handleChangeColor}
                 value={formik.values.color}
             />

@@ -1,24 +1,18 @@
 import React, { useEffect, useRef, useState } from 'react'
 import {useFormik} from 'formik'
 
-import { Imaginator } from '../../services/imaginator'
-import { ImageRemover, ProductForm } from '../../components'
+import useImaginator from '../../hooks/useImaginator'
+import { 
+    ImageRemover, 
+    ProductForm, 
+    Canvas, 
+    Imaginator 
+} from '../../components'
 
 const FormGroup = () => {
     const canvas = useRef()
     const [imageMode, setImageMode] = useState(false)
-
-    useEffect(() => {
-        const imaginator = new Imaginator('c', 1140, 840)
-        imaginator.init({
-            productName: 'Faja Latex Clasica 3 Hileras',
-            ref: '1934-4',
-            price: '$82.000',
-            whatsapp: '+57 321 737 8301'
-        })
-        canvas.current = imaginator
-        console.log("hola mundo")
-    }, [])
+    const [productValues, setProductValues] = useState(null)
 
     
     const formik = useFormik({
@@ -26,12 +20,13 @@ const FormGroup = () => {
             productName: '',
             ref: '',
             price: 0,
-            phone: '+57',
+            phone: '',
             color: null,
             category: ''
         },
         onSubmit: (values) => {
             console.log('Aqui hay que actualizar los datos del canvas', values)
+            setProductValues(values)
         }
     })
 
@@ -45,7 +40,7 @@ const FormGroup = () => {
     }
 
     const handleSaveImage = (file) => {
-        canvas.current.addImage(file)
+        //imaginator.addImage(file)
     }
 
     return (
@@ -65,7 +60,12 @@ const FormGroup = () => {
                 }
             </div>
             <div className="col-md-8 col-sm-12">
-                <canvas id="c"></canvas>
+                {
+                    !!productValues?
+                    <Imaginator initValues={productValues}/>
+                    :
+                    <Canvas/>
+                }
             </div>
         </div>
     )

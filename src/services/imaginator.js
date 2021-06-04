@@ -16,7 +16,8 @@ export class Imaginator {
             '#000000': logo_b_SVG
         }
 
-        const canvasElem = document.getElementById(canvasId)
+        const canvasElem = typeof canvasId === 'object' ? canvasId : document.getElementById(canvasId)
+        
 
         const mainContainerElement = document.createElement('div')
         mainContainerElement.style.position = 'relative'
@@ -64,6 +65,18 @@ export class Imaginator {
         this.price = ''
 
         this.objects = {}
+
+        this.defaultValues = {}
+
+        this.isInit = false
+    }
+
+    setDefaultValues(values){
+        Object.keys(values).forEach(value =>{
+            console.log(value, values[value])
+            this.defaultValues[value] = values[value]
+        })
+        console.log(this.defaultValues)
     }
 
     async init(values) {
@@ -85,6 +98,8 @@ export class Imaginator {
         this.price = price
         this.ref = ref
         this.whatsapp = whatsapp
+        this.whatsapp = values.whatsapp ? values.whatsapp : this.whatsapp
+        console.log(this.whatsapp)
 
         const infoBackground = new fabric.Rect({
             left: 0,
@@ -155,7 +170,43 @@ export class Imaginator {
             productNameRefObject: refrefText,
         }
 
+
+        this.isInit = true
+
         return
+    }
+
+    async render(values){
+        let background = null
+        let metalic = false
+        if(values.background){
+            if(typeof values.background === 'string'){
+                metalic = false
+                background = values.background
+            }else if(typeof values.background === 'object'){
+                background = values.background.value
+                metalic = values.background.metalic
+            }
+        }
+
+        if(this.isInit){
+            await this.update({
+                ...values,
+                background
+            })
+        }else{
+            await this.init({
+                ...values,
+                productName: values.productName || '---',
+                ref: values.ref || '---',
+                price: values.price || '---',
+                background
+            })
+        }
+
+        if(metalic){
+            this.metalicColor(background)
+        }
     }
 
     addImage(file) {
@@ -206,7 +257,7 @@ export class Imaginator {
     async renderSocials(whatsapp) {
         this.objects.whatsappObject && this.canvas.remove(this.objects.whatsappObject)
         this.objects.whatsappLogoObject && this.canvas.remove(this.objects.whatsappLogoObject)
-        this.whatsapp = whatsapp
+        this.whatsapp = !whatsapp ? this.defaultValues.whatsapp : whatsapp
         if (this.whatsapp) {
             const whatsappLogoObject = await this.loadSVG(whatsappSVG, {
                 lockMovementX: true,
@@ -217,7 +268,7 @@ export class Imaginator {
                 obj.set('top', this.canvas.getHeight() - obj.getScaledHeight() - (this.PADDING * 1))
             })
             whatsappLogoObject.set('id', 'whatsappLogo')
-            const whatsappNumber = new fabric.Textbox(whatsapp, {
+            const whatsappNumber = new fabric.Textbox(this.whatsapp, {
                 left: this.PADDING,
                 width: this.INFO_WIDTH - (this.PADDING * 3 + whatsappLogoObject.getScaledWidth()),
                 fontSize: 24,
@@ -473,7 +524,7 @@ export class Imaginator {
                 {offset: 1, color: darkColor}
             ]
         })
-        await this.update({whatsapp: this.whatsapp})
+        //await this.render({whatsapp: this.whatsapp})
         this.objects.infoBgObject.set('fill', gradient)
         this.canvas.renderAll()
         return

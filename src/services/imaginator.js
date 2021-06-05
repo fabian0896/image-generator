@@ -308,8 +308,22 @@ export class Imaginator {
         return
     }
 
-    toJSON() {
+     toJSON(uploadImageCallback) {
         const canvas = this.canvas
+        this.canvas.forEachObject(obj => {
+            if(obj.type === 'image'){
+                if(!uploadImageCallback) return 
+                //hay que sacar la fuente de la imagen para pasarla a la funcion
+                //no se m¡puede pasar el obj por que no lo va a servvir 
+                //hay que sevisar si se puede hacer el await en este callback o ver
+                //como hacer un for
+                const imageUrl =  uploadImageCallback(obj)
+                //aqui hay que eliminar la imagen y crear una nueva con las
+                //mismas propiedades pero que la fuente sea desde una Url
+                //o revisar si se puede coger la imagen y cambiarle la fuente a una url
+                //para evitar eliminarla y perder todas la propiedades
+            }
+        })
         const json = canvas.toObject(['selectable', 'lockMovementX', 'lockMovementY', 'id'])
         console.log(json)
         return json

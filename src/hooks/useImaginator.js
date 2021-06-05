@@ -1,7 +1,7 @@
 import { useRef, useEffect, useState } from 'react'
-import numeral from 'numeral'
 import parsePhoneNumber from 'libphonenumber-js'
 import { Imaginator } from '../services/imaginator'
+import uploadImage from '../services/uploadImage'
 
 
 
@@ -26,6 +26,8 @@ const useImaginator = (canvasId) => {
 
     const addImage = async (file) => {
         setLoading(true)
+        //const imageUrl = await uploadImage(file)
+        //console.log('la url de la imgen es: ', imageUrl)
         await canvas.current.addImage(file)
         setLoading(false)
     }

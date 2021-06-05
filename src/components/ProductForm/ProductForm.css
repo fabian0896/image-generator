@@ -43,6 +43,8 @@
     left: 50%;
     transform: translate(-50%, -50%);
     transition: .3s;
+    text-align: center;
+    padding: 5px;
 }
 
 .other-color-container:hover{
@@ -61,4 +63,19 @@
 
 .metalic{
     background: linear-gradient(60deg, #B81414 0%, #EB4747 15%, #B81414 30%, #EB4747 41%, #B81414 60%, #EB4747 71%, #EB4747 86%, #B81414 100%);
+}
+
+
+
+.ProductForm-price-container{
+    display: flex;
+}
+
+.ProductForm-price-container > .price{
+    flex: 1;
+    margin-right: 10px;
+}
+
+.ProductForm-sell-type-container > div{
+    width: 100%;
 }

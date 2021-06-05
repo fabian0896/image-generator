@@ -95,7 +95,7 @@ const ColorComponent = ({ color, selected, onSelected }) => {
     }
 
     return (
-        <div className="col-2">
+        <div className="col-xs-4 col-sm-4 col-md-4 col-lg-2">
             <div
                 onClick={handleClick} 
                 style={{background: getBackground()}} 
@@ -105,7 +105,7 @@ const ColorComponent = ({ color, selected, onSelected }) => {
 }
 
 
-const ColorSelect = ({value, onChange, colors}) => {
+const ColorSelect = ({value, onChange, colors, label="Color"}) => {
 
     const [selection, setSelection] = useState(null)
 
@@ -127,7 +127,7 @@ const ColorSelect = ({value, onChange, colors}) => {
 
     return (
         <div className="mt-3">
-            <label className="form-label">Color</label>
+            <label className="form-label">{label}</label>
             <div className="row">
                 {
                     colors.map((color, index) => (

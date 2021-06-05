@@ -20,8 +20,8 @@ const ButtonGroup = ({onChange}) => {
         onChange && onChange(value)
     }
     return(
-        <div className="Imaginator-button-container">
-            <div className="btn-group mt-3" role="group" aria-label="Basic example">
+        <div>
+            <div className="btn-group" role="group" aria-label="Basic example">
                 <button onClick={handleClick(1)} type="button" className={clsx("btn", { ['btn-primary']: selection === 1, ['btn-outline-primary']: !(selection === 1) })}>Cierre</button>
                 <button onClick={handleClick(2)} type="button" className={clsx("btn", { ['btn-primary']: selection === 2, ['btn-outline-primary']: !(selection === 2) })}>2 Hileras</button>
                 <button onClick={handleClick(3)} type="button" className={clsx("btn", { ['btn-primary']: selection === 3, ['btn-outline-primary']: !(selection === 3) })}>3 Hileras</button>
@@ -51,10 +51,22 @@ const Imaginator = ({ initValues, image }) => {
         imaginator.addHooksImage(hooks)
     }
 
+    const handleDeleteIamge = () => {
+        imaginator.removeImage(imaginator.selection)
+    }
+
     return (
         <div>
             <canvas ref={canvasRef}></canvas>
-            <ButtonGroup onChange={handleChangeHooks}/>
+            <div className="Imaginator-controls-container">
+                {
+                    imaginator.selection ? 
+                    <button onClick={handleDeleteIamge} type="button" className="btn btn-danger">Eliminar Imagen</button>
+                    :
+                   <div></div>
+                }
+                <ButtonGroup onChange={handleChangeHooks}/>
+            </div>
         </div>
     )
 }

@@ -1,5 +1,6 @@
 import React, { useCallback } from 'react'
-import numeral from 'numeral'
+import numeral, { Numeral } from 'numeral'
+import NumberFormat from 'react-number-format';
 
 
 import ColorSelect from './ColorSelect'
@@ -8,34 +9,75 @@ import './ProductForm.css'
 
 const colors = [
     {
-        value: 'red',
+        value: '#292926',
         metalic: false
     },
     {
-        value: 'blue',
+        value: '#E0CAB3',
         metalic: false
     },
     {
-        value: 'purple',
+        value: '#CD4D8D',
         metalic: false
     },
     {
-        value: 'yellow',
+        value: '#148ED5',
+        metalic: false
+    },
+    {
+        value: '#FF9291',
+        metalic: false
+    },
+    {
+        value: '#9550AF',
+        metalic: false
+    },
+    {
+        value: '#C44545',
+        metalic: false
+    },
+    {
+        value: '#3760BF',
+        metalic: false
+    },
+    {
+        value: '#157FB8',
+        metalic: false
+    },
+    {
+        value: '#BA3867',
+        metalic: false
+    },
+    {
+        value: '#EFDF41',
+        metalic: false
+    },
+    {
+        value: '#79437F',
         metalic: true
     },
     {
-        value: 'orange',
-        metalic: false
-    },
-    {
-        value: '#563D7C',
+        value: '#A82752',
         metalic: true
     },
     {
-        value: 'grey',
+        value: '#18378A',
+        metalic: true
+    },
+    {
+        value: '#335167',
+        metalic: true
+    },
+    {
+        value: '#292926',
+        metalic: true
+    },
+    {
+        value: '#E0CAB3',
         metalic: true
     },
 ]
+
 
 const ProductForm = ({ formik, ...props }) => {
 
@@ -77,16 +119,71 @@ const ProductForm = ({ formik, ...props }) => {
                     className="form-control"
                     id="ref" />
             </div>
+
             <div className="mb-3">
-                <label htmlFor="price" className="form-label">Valor</label>
-                <input
-                    value={numeral(formik.values.price).format("$0,0")}
-                    onChange={handleChangePrice}
-                    name="price"
-                    type="text"
-                    className="form-control"
-                    id="price" />
+                <label htmlFor="price" className="form-label">Precio</label>
+                <div className="ProductForm-price-container">
+                    <div className="price">
+                        <NumberFormat
+                            value={formik.values.price.value}
+                            onChange={formik.handleChange}
+                            name="price.value"
+                            type="text"
+                            className="form-control"
+                            id="price" 
+                            thousandSeparator={true}
+                            prefix={'$'}/>
+                    </div>
+                    <div className="currency">
+                        <div className="btn-group" role="group">
+                            <input
+                                checked={formik.values.price.currency === 'COP'}
+                                onChange={formik.handleChange}
+                                value="COP"
+                                type="radio"
+                                className="btn-check"
+                                name="price.currency"
+                                id="COP" />
+                            <label className="btn btn-outline-primary" htmlFor="COP">COP</label>
+
+                            <input
+                                checked={formik.values.price.currency === 'USD'}
+                                onChange={formik.handleChange}
+                                value="USD"
+                                type="radio"
+                                className="btn-check"
+                                name="price.currency"
+                                id="USD" />
+                            <label className="btn btn-outline-primary" htmlFor="USD">USD</label>
+                        </div>
+                    </div>
+                </div>
             </div>
+
+
+            <div className="ProductForm-sell-type-container mb-3">
+                <div className="btn-group" role="group">
+                    <input
+                        checked={formik.values.selltype === "wholesale"}
+                        value="wholesale" onChange={formik.handleChange}
+                        type="radio" className="btn-check"
+                        name="selltype"
+                        id="wholesale" />
+                    <label className="btn btn-outline-primary" htmlFor="wholesale">Por Mayor</label>
+
+                    <input
+                        checked={formik.values.selltype === "retail"}
+
+                        value="retail" onChange={formik.handleChange}
+                        type="radio" className="btn-check"
+                        name="selltype"
+                        id="retail"
+                        autoComplete="off" />
+                    <label className="btn btn-outline-primary" htmlFor="retail">Por Detal</label>
+                </div>
+            </div>
+
+
 
             <div className="mb-3">
                 <label htmlFor="category" className="form-label">Categoria</label>
@@ -101,7 +198,8 @@ const ProductForm = ({ formik, ...props }) => {
                 </select>
             </div>
 
-            {
+
+            {   //Si se quiere avilitar la opcion de cambiar el whatsapp hay que poner este campo
                 false &&
                 <div className="mb-3">
                     <label htmlFor="price" className="form-label">WhatsApp</label>
@@ -115,33 +213,18 @@ const ProductForm = ({ formik, ...props }) => {
                 </div>
             }
 
-            <div className="row">
-                <div className="col-7">
-                    <div className="btn-group" role="group">
-                        <input type="radio" className="btn-check" name="btnradio" id="mayor" autocomplete="off" checked />
-                        <label className="btn btn-outline-primary" htmlFor="btnradio1">Por Mayor</label>
 
-                        <input type="radio" className="btn-check" name="btnradio" id="detal" autocomplete="off" />
-                        <label className="btn btn-outline-primary" htmlFor="btnradio2">Por Detal</label>
-                    </div>
-                </div>
-                <div className="col-5">
-                    <div className="btn-group" role="group">
-                        <input type="radio" className="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked />
-                        <label className="btn btn-outline-primary" htmlFor="btnradio1">COP</label>
 
-                        <input type="radio" className="btn-check" name="btnradio" id="btnradio2" autocomplete="off" />
-                        <label className="btn btn-outline-primary" htmlFor="btnradio2">USD</label>
-                    </div>
-                </div>
-            </div>
 
 
             <ColorSelect
+                label="Color de fondo"
                 colors={colors}
                 onChange={handleChangeColor}
                 value={formik.values.color}
             />
+
+            
 
             <div className="row mt-4">
                 <div className="col">

@@ -19,10 +19,14 @@ const FormGroup = () => {
         initialValues: {
             productName: '',
             ref: '',
-            price: 0,
+            price: {
+                value: '',
+                currency: 'COP'
+            },
             phone: '',
             color: null,
-            category: ''
+            category: '',
+            selltype: 'wholesale'
         },
         onSubmit: (values) => {
             console.log('Aqui hay que actualizar los datos del canvas', values)

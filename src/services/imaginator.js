@@ -93,10 +93,18 @@ export class Imaginator {
         } = values
 
         this.productName = productName
-        this.price = price
         this.ref = ref
         this.whatsapp = whatsapp
         this.whatsapp = values.whatsapp ? values.whatsapp : this.whatsapp
+
+        if(typeof price === 'string'){
+            this.price = {
+                value: price,
+                currency: 'COP'
+            }
+        } else{
+            this.price = price
+        }
 
         const infoBackground = new fabric.Rect({
             left: 0,
@@ -112,6 +120,8 @@ export class Imaginator {
 
 
         this.renderDivider()
+
+        
 
 
         const companyLogoObject = await this.loadSVG(this.logo[TEXT_COLOR], {
@@ -131,11 +141,11 @@ export class Imaginator {
         await this.renderSocials(whatsapp)
 
         // Textos para hacer referencias y poderlos editat mas adelante
-        const priceText = new fabric.Textbox(price, {
+        const priceText = new fabric.Textbox(`${(this.price.currency === 'USD') ? 'USD ' : ''}${this.price.value}`, {
             left: PADDING,
             top: canvas.getHeight() - 300,
             width: INFO_WIDTH - PADDING * 2,
-            fontSize: 60,
+            fontSize: this.price.currency === 'USD'? 45 : 60,
             fontFamily: 'Roboto',
             fill: TEXT_COLOR,
             fontWeight: 400,
@@ -214,6 +224,12 @@ export class Imaginator {
                 image.left = this.INFO_WIDTH
                 const scaleValue = fabric.util.findScaleToFit(image, this.canvas)
                 image.scale(scaleValue)
+                image.on('selected', (e)=>{
+                    this.onSelectedCallBack && this.onSelectedCallBack(e.target)
+                })
+                image.on('deselected', (e) => {
+                    this.onSelectedCallBack && this.onSelectedCallBack(null)
+                })
                 this.canvas.setActiveObject(image)
                 this.canvas.add(image)
                 resolve(image)
@@ -234,6 +250,14 @@ export class Imaginator {
             return
         })
         */
+    }
+
+    onSelected(callback){
+        this.onSelectedCallBack = callback
+    }
+
+    removeElement(object){
+        this.canvas.remove(object)
     }
 
     loadSVG(url, props, callback) {
@@ -296,6 +320,14 @@ export class Imaginator {
             this.canvas.clear()
             this.canvas.loadFromJSON(json, () => {
                 this.canvas.forEachObject(obj => {
+                    if(obj.type === 'image'){
+                        obj.on('selected', (e)=>{
+                            this.onSelectedCallBack && this.onSelectedCallBack(e.target)
+                        })
+                        obj.on('deselected', (e) => {
+                            this.onSelectedCallBack && this.onSelectedCallBack(null)
+                        })
+                    }
                     const id = obj.get('id')
                     if (!id) return
                     this.objects[id + 'Object'] = obj
@@ -327,6 +359,16 @@ export class Imaginator {
         const { productName, ref, price, whatsapp, background } = props
         const { priceObject, productNameRefObject } = this.objects
 
+        
+        if(typeof price === 'string'){
+            this.price = {
+                value: price,
+                currency: 'COP'
+            }
+        } else if(typeof price === 'object'){
+            this.price = price
+        }
+
         this.objects.infoBgObject && this.objects.infoBgObject.set('fill', background || this.BACKGROUND)
         const TEXT_COLOR = fontColorContrast(background || this.BACKGROUND)
         this.TEXT_COLOR = TEXT_COLOR
@@ -343,7 +385,8 @@ export class Imaginator {
             this.objects.companyLogoObject = companyLogoObject
         }
 
-        priceObject && priceObject.set('text', price || this.price)
+        priceObject && priceObject.set('text', `${(this.price.currency === 'USD') ? 'USD ' : ''}${this.price.value}`)
+        priceObject && priceObject.set('fontSize', this.price.currency === 'USD'? 45 : 60)
         priceObject && priceObject.set('fill', TEXT_COLOR)
 
 

@@ -8,12 +8,19 @@ import { Imaginator } from '../services/imaginator'
 const useImaginator = (canvasId) => {
     const canvas = useRef(null)
     const [loading, setLoading] = useState(false)
+    const [selection, setSelection] = useState(null)
+
     useEffect(() => {
         const canvasRef = typeof canvasId === 'object' ? canvasId.current : canvasId
         const imaginator = new Imaginator(canvasRef, 1140, 840)
         imaginator.setDefaultValues({whatsapp: '+57 321 737 8301'})
         canvas.current = imaginator
         setLoading(false)
+
+        imaginator.onSelected((object => {
+            setSelection(object)
+        }))
+
     }, [])
 
 
@@ -27,7 +34,7 @@ const useImaginator = (canvasId) => {
         setLoading(true)
         await canvas.current.render({
             ...values,
-            price: numeral(values.price).format('$0,0'),
+            price: values.price,
             whatsapp: values.phone && parsePhoneNumber(values.phone, 'CO').formatInternational(),
             background: values.color
         })
@@ -38,11 +45,18 @@ const useImaginator = (canvasId) => {
         await canvas.current.addVarianHook(hooks)
     }
 
+
+    const removeImage = (image) => {
+        canvas.current.removeElement(image)
+    }
+
     return {
         loading,
         addImage,
         render,
-        addHooksImage
+        addHooksImage,
+        selection,
+        removeImage
     }
 }
 

@@ -73,10 +73,8 @@ export class Imaginator {
 
     setDefaultValues(values){
         Object.keys(values).forEach(value =>{
-            console.log(value, values[value])
             this.defaultValues[value] = values[value]
         })
-        console.log(this.defaultValues)
     }
 
     async init(values) {
@@ -99,7 +97,6 @@ export class Imaginator {
         this.ref = ref
         this.whatsapp = whatsapp
         this.whatsapp = values.whatsapp ? values.whatsapp : this.whatsapp
-        console.log(this.whatsapp)
 
         const infoBackground = new fabric.Rect({
             left: 0,
@@ -361,24 +358,30 @@ export class Imaginator {
         this.canvas.renderAll()
     }
 
-    addVarianHook(hooks = 1) {
-        if (hooks > 4 || hooks < 1) {
-            throw new Error('El valor de hooks tiene que estar entre 1 y 4')
-        }
+    addVarianHook(hooks = 0) { 
+        return new Promise((resolve, reject) => {
+            if(hooks === 0){
+                this.objects.hooksObject && this.canvas.remove(this.objects.hooksObject)
+                resolve()
+                return
+            }
 
-        let oldPosition = this.objects.hooksObject ? this.objects.hooksObject.getPointByOrigin('center', 'center') : null
-        this.objects.hooksObject && this.canvas.remove(this.objects.hooksObject)
-
-        const hooksImages = [
-            'https://i.ibb.co/vJDQhpC/hooks-1.jpg',
-            'https://i.ibb.co/Q6D78sK/hooks-2.jpg',
-            'https://i.ibb.co/BjrKY6k/hooks-3.jpg',
-            'https://i.ibb.co/zVyNmB1/hooks-4.jpg'
-        ]
-
-        const RADIUS = 80
-
-        return new Promise(resolve => {
+            if (hooks > 4 || hooks < 1) {
+                reject('El valor de hooks tiene que estar entre 1 y 4')
+                return
+            }
+    
+            let oldPosition = this.objects.hooksObject ? this.objects.hooksObject.getPointByOrigin('center', 'center') : null
+            this.objects.hooksObject && this.canvas.remove(this.objects.hooksObject)
+            
+            const hooksImages = [
+                'https://i.ibb.co/vJDQhpC/hooks-1.jpg',
+                'https://i.ibb.co/Q6D78sK/hooks-2.jpg',
+                'https://i.ibb.co/BjrKY6k/hooks-3.jpg',
+                'https://i.ibb.co/zVyNmB1/hooks-4.jpg'
+            ]
+    
+            const RADIUS = 80
 
             fabric.Image.fromURL(hooksImages[hooks - 1], img => {
                 const circle1 = new fabric.Circle({

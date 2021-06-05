@@ -5,7 +5,7 @@ import clsx from 'clsx'
 import './Imaginator.css'
 
 
-const ButtonGroup = () => {
+const ButtonGroup = ({onChange}) => {
 
     const [selection, setSelection] = useState(0)
 
@@ -13,9 +13,11 @@ const ButtonGroup = () => {
     const handleClick = (value) => () => {
         if (value === selection) {
             setSelection(0)
+            onChange && onChange(0)
             return
         }
         setSelection(value)
+        onChange && onChange(value)
     }
     return(
         <div className="Imaginator-button-container">
@@ -31,19 +33,28 @@ const ButtonGroup = () => {
 
 
 
-const Imaginator = ({ initValues }) => {
+const Imaginator = ({ initValues, image }) => {
     const canvasRef = useRef(null)
+
     const imaginator = useImaginator(canvasRef)
 
     useEffect(()=>{
         imaginator.render(initValues)
     }, [initValues])
 
+    useEffect(()=>{
+        if(!image) return
+        imaginator.addImage(image)
+    }, [image])
+
+    const handleChangeHooks = (hooks) => {
+        imaginator.addHooksImage(hooks)
+    }
+
     return (
         <div>
-            <canvas ref={canvasRef} id="c"></canvas>
-            <ButtonGroup/>
-
+            <canvas ref={canvasRef}></canvas>
+            <ButtonGroup onChange={handleChangeHooks}/>
         </div>
     )
 }

@@ -17,7 +17,6 @@ const ImageRemover = (props) => {
         fileInput.click()
         const uploadImage = (e) => {
             const file = e.target.files[0]
-            console.log(file)
             bgRemover.current.uploadImage(file)
             fileInput.removeEventListener('change', uploadImage)
             setIsEsditing(true)
@@ -27,7 +26,6 @@ const ImageRemover = (props) => {
 
     const handleSaveImage = async () => {
             const file = await bgRemover.current.generateImage()
-            console.log(file)
             props.onSave && props.onSave(file)
             setIsEsditing(false)
     }

@@ -37,7 +37,7 @@ const colors = [
     },
 ]
 
-const ProductForm = ({formik,...props}) => {
+const ProductForm = ({ formik, ...props }) => {
 
     const handleChangePrice = e => {
         const value = e.target.value
@@ -53,7 +53,7 @@ const ProductForm = ({formik,...props}) => {
     const handleChangeColor = useCallback((color) => {
         formik.setFieldValue('color', color)
     }, [])
-     
+
 
     return (
         <form onSubmit={formik.handleSubmit}>
@@ -87,31 +87,58 @@ const ProductForm = ({formik,...props}) => {
                     className="form-control"
                     id="price" />
             </div>
-            
+
             <div className="mb-3">
                 <label htmlFor="category" className="form-label">Categoria</label>
                 <select value={formik.values.category} onChange={formik.handleChange} name="category" id="category" className="form-select  mb-3">
-                    <option selected>selecciona una categoria</option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                    <option defaultValue>selecciona una categoria</option>
+                    <option value="1">Clásica</option>
+                    <option value="2">Deportiva</option>
+                    <option value="3">Especial</option>
+                    <option value="4">Powernet</option>
+                    <option value="5">Bioenergetica</option>
+                    <option value="6">Otra</option>
                 </select>
             </div>
 
+            {
+                false &&
+                <div className="mb-3">
+                    <label htmlFor="price" className="form-label">WhatsApp</label>
+                    <input
+                        value={formik.values.phone}
+                        onChange={formik.handleChange}
+                        name="phone"
+                        type="tel"
+                        className="form-control"
+                        id="phone" />
+                </div>
+            }
 
-            <div className="mb-3">
-                <label htmlFor="price" className="form-label">WhatsApp</label>
-                <input
-                    value={formik.values.phone}
-                    onChange={formik.handleChange}
-                    name="phone"
-                    type="tel"
-                    className="form-control"
-                    id="phone" />
+            <div className="row">
+                <div className="col-7">
+                    <div className="btn-group" role="group">
+                        <input type="radio" className="btn-check" name="btnradio" id="mayor" autocomplete="off" checked />
+                        <label className="btn btn-outline-primary" htmlFor="btnradio1">Por Mayor</label>
+
+                        <input type="radio" className="btn-check" name="btnradio" id="detal" autocomplete="off" />
+                        <label className="btn btn-outline-primary" htmlFor="btnradio2">Por Detal</label>
+                    </div>
+                </div>
+                <div className="col-5">
+                    <div className="btn-group" role="group">
+                        <input type="radio" className="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked />
+                        <label className="btn btn-outline-primary" htmlFor="btnradio1">COP</label>
+
+                        <input type="radio" className="btn-check" name="btnradio" id="btnradio2" autocomplete="off" />
+                        <label className="btn btn-outline-primary" htmlFor="btnradio2">USD</label>
+                    </div>
+                </div>
             </div>
 
+
             <ColorSelect
-                colors={colors} 
+                colors={colors}
                 onChange={handleChangeColor}
                 value={formik.values.color}
             />

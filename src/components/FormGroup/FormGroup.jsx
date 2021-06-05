@@ -1,7 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useState } from 'react'
 import {useFormik} from 'formik'
 
-import useImaginator from '../../hooks/useImaginator'
 import { 
     ImageRemover, 
     ProductForm, 
@@ -9,9 +8,10 @@ import {
     Imaginator 
 } from '../../components'
 
+
 const FormGroup = () => {
-    const canvas = useRef()
     const [imageMode, setImageMode] = useState(false)
+    const [file, setFile] = useState(null)
     const [productValues, setProductValues] = useState(null)
 
     
@@ -30,17 +30,14 @@ const FormGroup = () => {
         }
     })
 
-
-    const handleSubmitInfo = (values) => {
-        canvas.current.update(values)
-    }
-
     const handelChangeImageMode = (state) => ()=>{
         setImageMode(state)
     }
 
     const handleSaveImage = (file) => {
         //imaginator.addImage(file)
+        console.log(file)
+        setFile(file)
     }
 
     return (
@@ -55,14 +52,15 @@ const FormGroup = () => {
                         <ProductForm
                             formik={formik}
                             onImageMode={handelChangeImageMode(true)}
-                            onSubmit={handleSubmitInfo}
                         />
                 }
             </div>
             <div className="col-md-8 col-sm-12">
                 {
                     !!productValues?
-                    <Imaginator initValues={productValues}/>
+                    <Imaginator
+                        image={file} 
+                        initValues={productValues}/>
                     :
                     <Canvas/>
                 }

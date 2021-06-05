@@ -34,10 +34,15 @@ const useImaginator = (canvasId) => {
         setLoading(false)
     }
 
+    const addHooksImage = async (hooks=0) => {
+        await canvas.current.addVarianHook(hooks)
+    }
+
     return {
         loading,
         addImage,
-        render
+        render,
+        addHooksImage
     }
 }
 

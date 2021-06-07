@@ -145,7 +145,7 @@ export class Imaginator {
             left: PADDING,
             top: canvas.getHeight() - 300,
             width: INFO_WIDTH - PADDING * 2,
-            fontSize: this.price.currency === 'USD'? 45 : 60,
+            fontSize: this.price.currency === 'USD'? 50 : 60,
             fontFamily: 'Roboto',
             fill: TEXT_COLOR,
             fontWeight: 400,
@@ -308,22 +308,29 @@ export class Imaginator {
         return
     }
 
-     toJSON(uploadImageCallback) {
+     async toJSON(uploadImageFunction) {
         const canvas = this.canvas
-        this.canvas.forEachObject(obj => {
-            if(obj.type === 'image'){
-                if(!uploadImageCallback) return 
-                //hay que sacar la fuente de la imagen para pasarla a la funcion
-                //no se m¡puede pasar el obj por que no lo va a servvir 
-                //hay que sevisar si se puede hacer el await en este callback o ver
-                //como hacer un for
-                const imageUrl =  uploadImageCallback(obj)
-                //aqui hay que eliminar la imagen y crear una nueva con las
-                //mismas propiedades pero que la fuente sea desde una Url
-                //o revisar si se puede coger la imagen y cambiarle la fuente a una url
-                //para evitar eliminarla y perder todas la propiedades
+        
+        if(uploadImageFunction){
+            const imageObjects = this.canvas._objects.filter(obj => obj.type === 'image')
+            for(let image of imageObjects){
+                const imageSource = image.getSrc()
+                const isBlob = imageSource.startsWith('blob:')
+                if(isBlob){
+                    const blob = await fetch(imageSource).then(res => res.blob())
+                    URL.revokeObjectURL(imageSource)
+                    const newUrl = await uploadImageFunction(blob)
+                    await new Promise(resolve => {
+                        image.setSrc(newUrl ,()=>{
+                            resolve()
+                        })
+                    })
+    
+                }
             }
-        })
+            this.canvas.renderAll()
+        }
+
         const json = canvas.toObject(['selectable', 'lockMovementX', 'lockMovementY', 'id'])
         console.log(json)
         return json
@@ -400,7 +407,7 @@ export class Imaginator {
         }
 
         priceObject && priceObject.set('text', `${(this.price.currency === 'USD') ? 'USD ' : ''}${this.price.value}`)
-        priceObject && priceObject.set('fontSize', this.price.currency === 'USD'? 45 : 60)
+        priceObject && priceObject.set('fontSize', this.price.currency === 'USD'? 50 : 60)
         priceObject && priceObject.set('fill', TEXT_COLOR)
 
 

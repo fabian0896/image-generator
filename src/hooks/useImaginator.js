@@ -25,9 +25,7 @@ const useImaginator = (canvasId) => {
 
 
     const addImage = async (file) => {
-        setLoading(true)
-        //const imageUrl = await uploadImage(file)
-        //console.log('la url de la imgen es: ', imageUrl)
+        setLoading(true)   
         await canvas.current.addImage(file)
         setLoading(false)
     }

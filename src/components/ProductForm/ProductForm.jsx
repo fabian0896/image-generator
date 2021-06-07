@@ -1,5 +1,4 @@
 import React, { useCallback } from 'react'
-import numeral, { Numeral } from 'numeral'
 import NumberFormat from 'react-number-format';
 
 
@@ -80,13 +79,6 @@ const colors = [
 
 
 const ProductForm = ({ formik, ...props }) => {
-
-    const handleChangePrice = e => {
-        const value = e.target.value
-        const name = e.target.name
-        const priceNumber = numeral(value).value()
-        formik.setFieldValue(name, priceNumber)
-    }
 
     const handleSetImageMode = () => {
         props.onImageMode && props.onImageMode()
@@ -184,17 +176,17 @@ const ProductForm = ({ formik, ...props }) => {
             </div>
 
 
-
             <div className="mb-3">
                 <label htmlFor="category" className="form-label">Categoria</label>
                 <select value={formik.values.category} onChange={formik.handleChange} name="category" id="category" className="form-select  mb-3">
                     <option defaultValue>selecciona una categoria</option>
-                    <option value="1">Clásica</option>
-                    <option value="2">Deportiva</option>
-                    <option value="3">Especial</option>
-                    <option value="4">Powernet</option>
-                    <option value="5">Bioenergetica</option>
-                    <option value="6">Otra</option>
+                    <option value="clasica">Clásica</option>
+                    <option value="deportiva">Deportiva</option>
+                    <option value="metalizada">Metalizada</option>
+                    <option value="especial">Especial</option>
+                    <option value="powernet">Powernet</option>
+                    <option value="bioenergetica">Bioenergetica</option>
+                    <option value="other">Otra</option>
                 </select>
             </div>
 
@@ -214,28 +206,15 @@ const ProductForm = ({ formik, ...props }) => {
             }
 
 
-
-
-
             <ColorSelect
                 label="Color de fondo"
                 colors={colors}
                 onChange={handleChangeColor}
                 value={formik.values.color}
             />
-
+        
+            <button type="submit" className="btn btn-primary form-control mt-3">Guardar Info</button>
             
-
-            <div className="row mt-4">
-                <div className="col">
-                    <button type="submit" className="btn btn-primary form-control">Guardar Info</button>
-                </div>
-                <div className="col">
-                    <button onClick={handleSetImageMode} type="button" className="btn btn-dark form-control">Agregar Imagenes</button>
-                </div>
-            </div>
-
-
         </form>
     )
 }

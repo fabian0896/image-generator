@@ -10,7 +10,7 @@ const OtherColorSelect = ({onChange, selected, color}) => {
     const [checkbox, setCheckbox] = useState(color?.metalic || false)
     const [originalColor, setOriginalColor] = useState(color?.value || '#eeeeee' )
     const [colorObject, setColorObject] = useState({value: '#eeeeee', metalic: false})
-    const [customTimeOut, setCustomTimeOut] = useState(true)
+    
 
     useEffect(() => {
         const color = originalColor
@@ -32,6 +32,13 @@ const OtherColorSelect = ({onChange, selected, color}) => {
         setColorObject(newColor)
 
     }, [originalColor, checkbox])
+
+    useEffect(()=>{
+        if(!color) return
+        setOriginalColor(color.value)
+        setCheckbox(color.metalic)
+    }, [color])
+
 
     const handleChangeCheckbox = e => {
         const check = e.target.checked
@@ -55,7 +62,7 @@ const OtherColorSelect = ({onChange, selected, color}) => {
                 style={{ background: colorValue, color: textColor, border: `1px dashed ${textColor}` }} 
                 htmlFor="colorSelector" 
                 className={clsx("other-color-container", {selected: selected(colorObject)})}>
-                <span>Seleccionar otro color</span>
+                <span>Otro color</span>
                 <input
                     onChange={handleChangeColor}
                     className="color-input"
@@ -95,7 +102,7 @@ const ColorComponent = ({ color, selected, onSelected }) => {
     }
 
     return (
-        <div className="col-xs-4 col-sm-4 col-md-4 col-lg-2">
+        <div className="col-sm-4  col-md-4 col-lg-3 col-xl-2">
             <div
                 onClick={handleClick} 
                 style={{background: getBackground()}} 

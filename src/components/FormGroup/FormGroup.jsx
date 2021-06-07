@@ -5,7 +5,9 @@ import {
     ImageRemover, 
     ProductForm, 
     Canvas, 
-    Imaginator 
+    Imaginator,
+    Acordion,
+    AcordionItem
 } from '../../components'
 
 
@@ -13,6 +15,8 @@ const FormGroup = () => {
     const [imageMode, setImageMode] = useState(false)
     const [file, setFile] = useState(null)
     const [productValues, setProductValues] = useState(null)
+
+    const [collapse, setCollapse] = useState(0)
 
     
     const formik = useFormik({
@@ -39,25 +43,29 @@ const FormGroup = () => {
     }
 
     const handleSaveImage = (file) => {
-        //imaginator.addImage(file)
-        console.log(file)
         setFile(file)
     }
+
+    const handleChangeAcordion = (value)=>{
+        setCollapse(value)
+    }   
 
     return (
         <div className="row">
             <div className="col-md-4 col-sm-12">
-                {
-                    imageMode ?
-                        <ImageRemover
-                            onSave={handleSaveImage}
-                            onCancel={handelChangeImageMode(false)} />
-                        :
+                <Acordion onChange={handleChangeAcordion} value={collapse} id="formAcordion">
+                    <AcordionItem title="Informacion De La Prenda">
                         <ProductForm
-                            formik={formik}
-                            onImageMode={handelChangeImageMode(true)}
-                        />
-                }
+                                formik={formik}
+                                onImageMode={handelChangeImageMode(true)} />
+                    </AcordionItem>
+                    <AcordionItem title="Gestion De Fotos">
+                        <ImageRemover
+                                onSave={handleSaveImage}
+                                onCancel={handelChangeImageMode(false)} />
+                    </AcordionItem>            
+                </Acordion>
+                <button onClick={()=>setCollapse(1)} > Pestaña 2</button>
             </div>
             <div className="col-md-8 col-sm-12">
                 {

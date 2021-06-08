@@ -9,11 +9,12 @@ const useImaginator = (canvasId) => {
     const canvas = useRef(null)
     const [loading, setLoading] = useState(false)
     const [selection, setSelection] = useState(null)
+    const [imageCount, setImageCount] = useState(0)
 
     useEffect(() => {
         const canvasRef = typeof canvasId === 'object' ? canvasId.current : canvasId
         const imaginator = new Imaginator(canvasRef, 1140, 840)
-        imaginator.setDefaultValues({whatsapp: '+57 321 737 8301'})
+        imaginator.setDefaultValues({whatsapp: '+57 318 2657709'})
         canvas.current = imaginator
         setLoading(false)
 
@@ -27,6 +28,9 @@ const useImaginator = (canvasId) => {
     const addImage = async (file) => {
         setLoading(true)   
         await canvas.current.addImage(file)
+        const imgCount = canvas.current.imageCount()
+        console.log(imgCount)
+        setImageCount(imgCount)
         setLoading(false)
     }
 
@@ -63,7 +67,7 @@ const useImaginator = (canvasId) => {
         const imageUrl = canvas.current.toDataURL()
         const link = document.createElement('a')
         link.href = imageUrl
-        link.download = true
+        link.download = canvas.current.productName
         link.click()
         //aqui toca pasar los datos a firebase
     }
@@ -77,7 +81,8 @@ const useImaginator = (canvasId) => {
         selection,
         removeImage,
         toJSON,
-        saveImage
+        saveImage,
+        imageCount
     }
 }
 

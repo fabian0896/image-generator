@@ -1,7 +1,9 @@
 import React from 'react'
 import './Acordion.css'
 
-const Acordion = ({children, id, value, onChange}) => {
+
+const Acordion = ({children, id, value, onChange, test}) => {
+
     return (
         <div className="accordion" id={id}>
             {
@@ -11,7 +13,7 @@ const Acordion = ({children, id, value, onChange}) => {
                         key: index,
                         index,
                         parentId: id,
-                        value: value - 1
+                        value: (value - 1)
                     })
                 ))
             }

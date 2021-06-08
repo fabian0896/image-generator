@@ -145,7 +145,7 @@ export class Imaginator {
             left: PADDING,
             top: canvas.getHeight() - 300,
             width: INFO_WIDTH - PADDING * 2,
-            fontSize: this.price.currency === 'USD'? 50 : 60,
+            fontSize: this.price.currency === 'USD'? 51 : 60,
             fontFamily: 'Roboto',
             fill: TEXT_COLOR,
             fontWeight: 400,
@@ -323,7 +323,7 @@ export class Imaginator {
                     await new Promise(resolve => {
                         image.setSrc(newUrl ,()=>{
                             resolve()
-                        })
+                        }, {crossOrigin: "anonymous"})
                     })
     
                 }
@@ -407,7 +407,7 @@ export class Imaginator {
         }
 
         priceObject && priceObject.set('text', `${(this.price.currency === 'USD') ? 'USD ' : ''}${this.price.value}`)
-        priceObject && priceObject.set('fontSize', this.price.currency === 'USD'? 50 : 60)
+        priceObject && priceObject.set('fontSize', this.price.currency === 'USD'? 51 : 60)
         priceObject && priceObject.set('fill', TEXT_COLOR)
 
 
@@ -417,6 +417,12 @@ export class Imaginator {
 
         const wpValue = props.hasOwnProperty('whatsapp') ? whatsapp : this.whatsapp
         await this.renderSocials(wpValue)
+
+        const productNameValue = props.hasOwnProperty('productName') ? productName : this.productName
+        const refValue = props.hasOwnProperty('ref') ? ref : this.ref
+
+        this.productName = productNameValue
+        this.ref = refValue
         
 
         this.canvas.renderAll()
@@ -486,7 +492,7 @@ export class Imaginator {
 
                 const scaleImageValue = fabric.util.findScaleToFit(img, circle2)
                 img.scale(scaleImageValue)
-
+                console.log(img.crossOrigin)
 
 
                 img.set({
@@ -518,7 +524,7 @@ export class Imaginator {
                 this.objects['hooksObject'] = group
                 this.canvas.add(group)
                 resolve()
-            })
+            }, {crossOrigin: "anonymous"})
 
         })
 
@@ -650,6 +656,13 @@ export class Imaginator {
         this.canvas.add(rect)
     }
 
+    imageCount(){
+        return this.canvas._objects.reduce((prev, curr) =>{
+            const value = curr.type === 'image' ? 1 : 0
+            return prev + value
+        }, 0)
+    }
+
 }
 
 export class BackgoundRemover {
@@ -704,8 +717,7 @@ export class BackgoundRemover {
         this.canvas = canvas
     }
 
-    async uploadImage(file) {
-        
+    async uploadImage(file) {    
         this.range.removeEventListener('change', this.chanegeValue)
         this.canvas.forEachObject(obj => {
             this.canvas.remove(obj)

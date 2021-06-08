@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useImaginator } from '../../hooks'
+import {  useImaginatorContext, useImaginator } from '../../hooks'
 import clsx from 'clsx'
 
 import './Imaginator.css'
@@ -33,19 +33,18 @@ const ButtonGroup = ({onChange}) => {
 
 
 
-const Imaginator = ({ initValues, image }) => {
-    const canvasRef = useRef(null)
+const Imaginator = ({ initValues, image, reference }) => {
+   const ref =  useRef(null)
+   const imaginator = useImaginator(ref)
 
-    const imaginator = useImaginator(canvasRef)
+   useEffect(()=>{
+       reference && reference(imaginator)
+   }, [])
 
     useEffect(()=>{
-        imaginator.render(initValues)
+        imaginator.render(initValues || {})
     }, [initValues])
 
-    useEffect(()=>{
-        if(!image) return
-        imaginator.addImage(image)
-    }, [image])
 
     const handleChangeHooks = (hooks) => {
         imaginator.addHooksImage(hooks)
@@ -57,7 +56,7 @@ const Imaginator = ({ initValues, image }) => {
 
     return (
         <div>
-            <canvas ref={canvasRef}></canvas>
+            <canvas ref={ref}></canvas>
             <div className="Imaginator-controls-container">
                 {
                     imaginator.selection ? 

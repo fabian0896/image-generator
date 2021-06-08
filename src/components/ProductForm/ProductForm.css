@@ -31,11 +31,6 @@
     font-weight: 500;
 }
 
-.other-color-container.selected{
-    border: 1px solid #333;
-    transform: scale(1.05);
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, .5);
-}
 
 .other-color-container > span{
     position: absolute;

@@ -186,7 +186,7 @@ const ProductForm = ({ onSubmit }) => {
                         name="selltype"
                         id="retail"
                         autoComplete="off" />
-                    <label className="btn btn-outline-primary" htmlFor="retail">Por Detal</label>
+                    <label className="btn btn-outline-primary" htmlFor="retail">Publico</label>
                 </div>
             </div>
 

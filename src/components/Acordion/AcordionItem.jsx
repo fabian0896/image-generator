@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import clsx from 'clsx'
 
-const AcordionItem = ({title, children, active, index, parentId, value, onClick}) => {
+const AcordionItem = ({title, children, active, index, parentId, value, onClick, disabled}) => {
     const ref = useRef(null)
     useEffect(()=>{
         if(value === index){
@@ -16,7 +16,7 @@ const AcordionItem = ({title, children, active, index, parentId, value, onClick}
     return (
         <div className="accordion-item">
             <h2 className="accordion-header" id="headingOne">
-                <button onClick={handleClick}  ref={ref} className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse-${index}`} aria-expanded="true" aria-controls="collapseOne">
+                <button disabled={disabled} onClick={handleClick}  ref={ref} className="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse-${index}`} aria-expanded="true" aria-controls="collapseOne">
                     {title}
                 </button>
             </h2>

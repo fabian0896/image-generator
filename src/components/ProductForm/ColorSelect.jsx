@@ -71,7 +71,7 @@ const OtherColorSelect = ({onChange, selected, color}) => {
                     id="colorSelector" />
             </label>
             <div className="chekbox-container">
-                <div className="mt-2 form-check">
+                <div className="mt-3 form-check">
                     <input checked={checkbox} onChange={handleChangeCheckbox} type="checkbox" className="form-check-input mr-5" id="exampleCheck1" />
                     <label className="form-check-label pl-5" htmlFor="exampleCheck1">Color Metalizado</label>
                 </div>

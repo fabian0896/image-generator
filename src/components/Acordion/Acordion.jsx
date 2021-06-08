@@ -1,4 +1,4 @@
-import React, {useState, useEffect}  from 'react'
+import React from 'react'
 import './Acordion.css'
 
 const Acordion = ({children, id, value, onChange}) => {
@@ -11,7 +11,7 @@ const Acordion = ({children, id, value, onChange}) => {
                         key: index,
                         index,
                         parentId: id,
-                        value
+                        value: value - 1
                     })
                 ))
             }

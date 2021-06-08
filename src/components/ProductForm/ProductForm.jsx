@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import NumberFormat from 'react-number-format';
-
+import {useFormik} from 'formik'
 
 import ColorSelect from './ColorSelect'
 
@@ -78,11 +78,26 @@ const colors = [
 ]
 
 
-const ProductForm = ({ formik, ...props }) => {
+const ProductForm = ({ onSubmit }) => {
 
-    const handleSetImageMode = () => {
-        props.onImageMode && props.onImageMode()
-    }
+    const formik = useFormik({
+        initialValues: {
+            productName: '',
+            ref: '',
+            price: {
+                value: '',
+                currency: 'COP'
+            },
+            phone: '',
+            color: null,
+            category: '',
+            selltype: 'wholesale'
+        },
+        onSubmit: (values) => {
+            onSubmit && onSubmit(values)
+        }
+    })
+
 
     const handleChangeColor = useCallback((color) => {
         formik.setFieldValue('color', color)

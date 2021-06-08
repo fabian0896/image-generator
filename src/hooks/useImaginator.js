@@ -50,13 +50,34 @@ const useImaginator = (canvasId) => {
         canvas.current.removeElement(image)
     }
 
+    const toJSON = async () => {
+        setLoading(true)
+        await canvas.current.toJSON(async (image)=>{
+            return await uploadImage(image)
+        })
+        setLoading(false)
+    }
+
+
+    const saveImage = () => {
+        const imageUrl = canvas.current.toDataURL()
+        const link = document.createElement('a')
+        link.href = imageUrl
+        link.download = true
+        link.click()
+        //aqui toca pasar los datos a firebase
+    }
+
+
     return {
         loading,
         addImage,
         render,
         addHooksImage,
         selection,
-        removeImage
+        removeImage,
+        toJSON,
+        saveImage
     }
 }
 

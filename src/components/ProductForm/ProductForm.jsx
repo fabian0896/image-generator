@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react'
 import NumberFormat from 'react-number-format';
-import {useFormik} from 'formik'
+import { useFormik } from 'formik'
 
 import ColorSelect from './ColorSelect'
 
@@ -137,9 +137,9 @@ const ProductForm = ({ onSubmit }) => {
                             name="price.value"
                             type="text"
                             className="form-control"
-                            id="price" 
+                            id="price"
                             thousandSeparator={true}
-                            prefix={'$'}/>
+                            prefix={'$'} />
                     </div>
                     <div className="currency">
                         <div className="btn-group" role="group">
@@ -221,15 +221,17 @@ const ProductForm = ({ onSubmit }) => {
             }
 
 
+
+
             <ColorSelect
                 label="Color de fondo"
                 colors={colors}
                 onChange={handleChangeColor}
                 value={formik.values.color}
             />
-        
+
             <button type="submit" className="btn btn-primary form-control mt-3">Guardar Info</button>
-            
+
         </form>
     )
 }

@@ -19,7 +19,6 @@ const FormGroup = () => {
 
     const handleSaveImage = (file) => {
         imaginator.addImage(file)
-        console.log(imaginator.imageCount)
         if(imaginator.imageCount === 2){
             console.log("hay que cerrar el editor de imagenes")
         }
@@ -37,7 +36,7 @@ const FormGroup = () => {
 
     const handleSaveData = () => {
         console.log("hay que generar la imagen")
-        imaginator.saveImage()
+        imaginator.saveImage(productValues)
     }
     
     return (

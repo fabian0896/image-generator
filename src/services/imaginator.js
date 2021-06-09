@@ -233,7 +233,7 @@ export class Imaginator {
                 this.canvas.setActiveObject(image)
                 this.canvas.add(image)
                 resolve(image)
-            })
+            }, {crossOrigin: "anonymous"})
         })
         
         /*
@@ -308,7 +308,7 @@ export class Imaginator {
         return
     }
 
-     async toJSON(uploadImageFunction) {
+    async toJSON(uploadImageFunction) {
         const canvas = this.canvas
         
         if(uploadImageFunction){

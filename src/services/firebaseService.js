@@ -1,8 +1,10 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 
+const IMAGES = 'images'
+
 const addImageToDB = async (values) => {
-    const db = firebase.firestore().collection('images')
+    const db = firebase.firestore().collection(IMAGES)
     const doc = db.doc()
 
     const id = doc.id
@@ -15,8 +17,15 @@ const addImageToDB = async (values) => {
     return id
 }
 
+const getAllImages = async () => {
+    const db = firebase.firestore().collection(IMAGES)
+    const snap = await db.get()
+    const res = snap.docs.map(snap => snap.data())
+    return res
+}
 
 
 export default {
-    addImageToDB
+    addImageToDB,
+    getAllImages
 }

@@ -102,7 +102,7 @@ const ColorComponent = ({ color, selected, onSelected }) => {
     }
 
     return (
-        <div className="col-sm-4  col-md-4 col-lg-3 col-xl-2">
+        <div className="col-4 col-sm-4 col-md-4 col-lg-3 col-xl-2">
             <div
                 onClick={handleClick} 
                 style={{background: getBackground()}} 

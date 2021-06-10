@@ -1,5 +1,6 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
+import 'firebase/storage'
 
 const IMAGES = 'images'
 
@@ -17,6 +18,13 @@ const addImageToDB = async (values) => {
     return id
 }
 
+const updateImage = async (values) => {
+    const db = firebase.firestore().collection(IMAGES)
+    const doc = db.doc(values.id)
+    await doc.update(values)
+    return updateImage
+}
+
 const getAllImages = async () => {
     const db = firebase.firestore().collection(IMAGES)
     const snap = await db.get()
@@ -25,7 +33,25 @@ const getAllImages = async () => {
 }
 
 
+const getImageById = async (id) => {
+    const db = firebase.firestore().collection(IMAGES)
+    const doc = db.doc(id)
+    const snap = await doc.get()
+    return snap.data()
+}
+
+const updateStorageImage = async (blob, url) => {
+    const storageRef = firebase.storage().refFromURL(url)
+    await storageRef.delete()
+    const snap = await storageRef.put(blob)
+    return snap.ref.getDownloadURL()
+}
+
+
 export default {
     addImageToDB,
-    getAllImages
+    getAllImages,
+    getImageById,
+    updateImage,
+    updateStorageImage
 }

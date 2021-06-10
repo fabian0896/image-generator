@@ -16,8 +16,11 @@ function App() {
         <Header/>
         <Content>
           <Switch>
+            <Route path="/creator/:id">
+              <Creator/>
+            </Route>
             <Route path="/creator">
-              <FormGroup/>
+              <Creator/>
             </Route>
             <Route path="/collection">
               <Collection/>

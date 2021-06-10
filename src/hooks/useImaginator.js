@@ -12,6 +12,7 @@ const useImaginator = (canvasId) => {
     const [imageCount, setImageCount] = useState(0)
 
     useEffect(() => {
+
         const canvasRef = typeof canvasId === 'object' ? canvasId.current : canvasId
         const imaginator = new Imaginator(canvasRef, 1140, 840)
         imaginator.setDefaultValues({whatsapp: '+57 318 2657709'})
@@ -70,28 +71,71 @@ const useImaginator = (canvasId) => {
         })
         
         //Consigo el url de la imagen del canvas
-        const imageUrl = canvas.current.toDataURL()
+        const images = await canvas.current.toDataURL({blobMode: true})
          
         // hay que subir la imagen a firestore para descargas en el futuro
-        const blob = await fetch(imageUrl).then(res => res.blob())
-        const downloadUrl = await uploadImage(blob ,'priceImage')
+        
+        const imagesUrls = {}
+        for(let size in images){
+            const downloadUrl = await uploadImage(images[size] ,'priceImage')
+            imagesUrls[size] = downloadUrl
+        }
     
         //agrego todos los datos a la Base de Datos
         await firebaseService.addImageToDB({
             ...values,
-            downloadUrl,
+            images: imagesUrls,
             editable: JSON.stringify(editJSON)
         })
 
 
         //Genero la descarga de la imagen desde local
         const link = document.createElement('a')
-        link.href = imageUrl
+        link.href = URL.createObjectURL(images.large)
         link.download = canvas.current.productName
         link.click()
 
         console.log("se guardaron los datos en la base de datos")
         //aqui toca pasar los datos a firebase
+    }
+
+    const updateImage = async (values) => {
+        //convierto el canvas a JSOn para poder editarlo en el futuro
+        const editJSON = await canvas.current.toJSON(async (image)=>{
+            return await uploadImage(image)
+        })
+        
+        //Consigo el url de la imagen del canvas
+        const images = await canvas.current.toDataURL({blobMode: true})
+         
+        // hay que subir la imagen a firestore para descargas en el futuro
+        
+        const imagesUrls = {}
+        for(let size in images){
+            const downloadUrl = await firebaseService.updateStorageImage(images[size] , values.images[size])
+            imagesUrls[size] = downloadUrl
+        }
+    
+        //agrego todos los datos a la Base de Datos
+        await firebaseService.updateImage({
+            ...values,
+            images: imagesUrls,
+            editable: JSON.stringify(editJSON)
+        })
+
+
+        //Genero la descarga de la imagen desde local
+        const link = document.createElement('a')
+        link.href = URL.createObjectURL(images.large)
+        link.download = canvas.current.productName
+        link.click()
+
+        console.log("se guardaron los datos en la base de datos")
+        //aqui toca pasar los datos a firebase
+    }
+
+    const loadFromJSON =  async (json) => {
+        await canvas.current.loadFromJSON(json)
     }
 
 
@@ -104,7 +148,9 @@ const useImaginator = (canvasId) => {
         removeImage,
         toJSON,
         saveImage,
-        imageCount
+        imageCount,
+        loadFromJSON,
+        updateImage
     }
 }
 

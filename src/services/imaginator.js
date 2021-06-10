@@ -274,7 +274,6 @@ export class Imaginator {
         })
     }
 
-
     async renderSocials(whatsapp) {
         this.objects.whatsappObject && this.canvas.remove(this.objects.whatsappObject)
         this.objects.whatsappLogoObject && this.canvas.remove(this.objects.whatsappLogoObject)
@@ -348,6 +347,7 @@ export class Imaginator {
                         obj.on('deselected', (e) => {
                             this.onSelectedCallBack && this.onSelectedCallBack(null)
                         })
+                        obj.bringToFront()
                     }
                     const id = obj.get('id')
                     if (!id) return
@@ -356,23 +356,52 @@ export class Imaginator {
                 callback && callback()
                 this.canvas.renderAll.bind(this.canvas)
                 console.log("JSON loaded!")
+                this.isInit = true
                 resolve()
             });
         })
 
     }
 
-    toDataURL(format = "jpeg", quality = 1) {
-        const result = this.canvas.toDataURL({
+    async toDataURL({blobMode}) {
+
+        const format = "jpeg"
+        const quality = "quality"
+
+        const resultFull = this.canvas.toDataURL({
             format,
-            quality,
+            quality: 1,
             multiplier: 2
         })
+        const resultMedium = this.canvas.toDataURL({
+            format,
+            quality: 1,
+            multiplier: 1
+        })
+        const resultSmall = this.canvas.toDataURL({
+            format,
+            quality,
+            multiplier: .6
+        })
 
-        //const img = new Image()
-        //img.src = result
-        //document.body.appendChild(img)
-        return result
+
+        let blobSmall = null
+        let blobMedium = null
+        let blobLarge = null
+        if(blobMode){
+            blobLarge = await fetch(resultFull).then(res => res.blob())
+            blobMedium = await fetch(resultMedium).then(res => res.blob())
+            blobSmall = await fetch(resultSmall).then(res => res.blob())
+            URL.revokeObjectURL(resultFull)
+            URL.revokeObjectURL(resultMedium)
+            URL.revokeObjectURL(resultSmall)
+        }
+        
+        return {
+            large: blobMode ? blobLarge : resultFull,
+            medium: blobMode ? blobMedium : resultMedium,
+            small: blobMode ? blobSmall : resultSmall
+        }
     }
 
     async update(props) {

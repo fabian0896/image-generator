@@ -31,43 +31,21 @@ const ButtonGroup = ({onChange}) => {
     )
 }
 
-
-
-const Imaginator = ({ initValues, image, reference }) => {
-   const ref =  useRef(null)
-   const imaginator = useImaginator(ref)
-
-   useEffect(()=>{
-       reference && reference(imaginator)
-   }, [])
-
-    useEffect(()=>{
-        imaginator.render(initValues || {})
-    }, [initValues])
-
-
-    const handleChangeHooks = (hooks) => {
-        imaginator.addHooksImage(hooks)
+const Imaginator = React.forwardRef((props, ref) => {
+    const handleChangeHooks = (value) => {
+        props.onChangeHooks(value)
     }
-
-    const handleDeleteIamge = () => {
-        imaginator.removeImage(imaginator.selection)
-    }
-
     return (
-        <div>
-            <canvas ref={ref}></canvas>
-            <div className="Imaginator-controls-container">
-                {
-                    imaginator.selection ? 
-                    <button onClick={handleDeleteIamge} type="button" className="btn btn-danger">Eliminar Imagen</button>
-                    :
-                   <div></div>
-                }
-                <ButtonGroup onChange={handleChangeHooks}/>
-            </div>
-        </div>
-    )
-}
+         <div>
+             <canvas ref={ref}></canvas>
+             <div className="Imaginator-controls-container">
+                 <div></div>
+                 <ButtonGroup onChange={handleChangeHooks}/>
+             </div>
+         </div>
+     )
+ })
+
+
 
 export default Imaginator

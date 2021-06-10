@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import NumberFormat from 'react-number-format';
 import { useFormik } from 'formik'
 
@@ -78,7 +78,7 @@ const colors = [
 ]
 
 
-const ProductForm = ({ onSubmit }) => {
+const ProductForm = ({ onSubmit, editData }) => {
 
     const formik = useFormik({
         initialValues: {
@@ -98,6 +98,11 @@ const ProductForm = ({ onSubmit }) => {
         }
     })
 
+    useEffect(()=>{
+        if(!editData) return
+        formik.setValues(editData)
+
+    }, [editData])
 
     const handleChangeColor = useCallback((color) => {
         formik.setFieldValue('color', color)
@@ -129,39 +134,41 @@ const ProductForm = ({ onSubmit }) => {
 
             <div className="mb-3">
                 <label htmlFor="price" className="form-label">Precio</label>
-                <div className="ProductForm-price-container">
-                    <div className="price">
-                        <NumberFormat
-                            value={formik.values.price.value}
-                            onChange={formik.handleChange}
-                            name="price.value"
-                            type="text"
-                            className="form-control"
-                            id="price"
-                            thousandSeparator={true}
-                            prefix={'$'} />
-                    </div>
-                    <div className="currency">
-                        <div className="btn-group" role="group">
-                            <input
-                                checked={formik.values.price.currency === 'COP'}
+                <div className="input-group">
+                    <div className="ProductForm-price-container">
+                        <div className="price">
+                            <NumberFormat
+                                value={formik.values.price.value}
                                 onChange={formik.handleChange}
-                                value="COP"
-                                type="radio"
-                                className="btn-check"
-                                name="price.currency"
-                                id="COP" />
-                            <label className="btn btn-outline-primary" htmlFor="COP">COP</label>
+                                name="price.value"
+                                type="text"
+                                className="form-control"
+                                id="price"
+                                thousandSeparator={true}
+                                prefix={'$'} />
+                        </div>
+                        <div className="currency">
+                            <div className="btn-group" role="group">
+                                <input
+                                    checked={formik.values.price.currency === 'COP'}
+                                    onChange={formik.handleChange}
+                                    value="COP"
+                                    type="radio"
+                                    className="btn-check"
+                                    name="price.currency"
+                                    id="COP" />
+                                <label className="btn btn-outline-primary" htmlFor="COP">COP</label>
 
-                            <input
-                                checked={formik.values.price.currency === 'USD'}
-                                onChange={formik.handleChange}
-                                value="USD"
-                                type="radio"
-                                className="btn-check"
-                                name="price.currency"
-                                id="USD" />
-                            <label className="btn btn-outline-primary" htmlFor="USD">USD</label>
+                                <input
+                                    checked={formik.values.price.currency === 'USD'}
+                                    onChange={formik.handleChange}
+                                    value="USD"
+                                    type="radio"
+                                    className="btn-check"
+                                    name="price.currency"
+                                    id="USD" />
+                                <label className="btn btn-outline-primary" htmlFor="USD">USD</label>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -3,10 +3,12 @@ import clsx from 'clsx'
 
 const AcordionItem = ({title, children, active, index, parentId, value, onClick, disabled}) => {
     const ref = useRef(null)
+
+    
     useEffect(()=>{
         if(value === index){
             ref.current.click()
-        }
+        }      
     },[value])
 
     const handleClick = () => {

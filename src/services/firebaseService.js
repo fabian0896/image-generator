@@ -47,11 +47,18 @@ const updateStorageImage = async (blob, url) => {
     return snap.ref.getDownloadURL()
 }
 
+const getCategories = async () => {
+    const db = firebase.firestore().collection('config')
+    const doc = db.doc('categories')
+    const snap = await doc.get()
+    return snap.data()
+}
 
 export default {
     addImageToDB,
     getAllImages,
     getImageById,
     updateImage,
-    updateStorageImage
+    updateStorageImage,
+    getCategories
 }

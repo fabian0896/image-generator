@@ -1,0 +1,80 @@
+.ImageShow-image{
+    border-radius: 5px;
+    box-shadow: 3px 3px 20px rgba(0, 0, 0, .3);
+}
+
+
+.ImageShow-selltype-container{
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.ImageShow-card-info{
+    background: #232323;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 3px 3px 20px rgba(0, 0, 0, .3);
+}
+
+
+.ImageShow-selltype-icon{
+    font-size: 20px;
+    color: #555;
+}
+
+.ImageShow-selltype-name{
+    margin: 0;
+    margin-left: 10px;
+    color: #555;
+}
+
+.ImageShow-currency-container{
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.ImageShow-currency-icon{
+    font-size: 20px;
+    color: #85bb65;
+}
+
+.ImageShow-currency-name{
+    margin: 0;
+    margin-left: 10px;
+    color: #555;
+}   
+
+
+.ImageShow-image-container{
+    position: relative;
+}
+
+.ImageShow-download-button{
+    font-size: 20px;
+    position: absolute;
+    color: white;
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, .5);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    right: 15px;
+    top: 15px;
+    transition: .5;
+    cursor: pointer;
+    box-shadow: 3px 3px 10px rgba(0, 0, 0, .3);
+}
+
+.ImageShow-download-button:hover{
+    background: rgba(0, 0, 0, .9);
+}
+
+.ImageShow-download-button:active{
+    transform: scale(.95);
+}
+

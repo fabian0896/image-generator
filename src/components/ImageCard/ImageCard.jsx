@@ -9,13 +9,10 @@ const ImageCard = ({ data, selectable }) => {
     const [checked, setChecked] = useState(false)
 
     const handleClick = () => {
-        const urlQueryParamas = new URLSearchParams()
-        urlQueryParamas.append('mode', 'edit')
         if(selectable) return
         //history.push(`/creator/${data.id}`)
         history.push({
-            pathname: `/creator/${data.id}`,
-            search: urlQueryParamas.toString()
+            pathname: `/image/${data.id}`
         })
     }
 

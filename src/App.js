@@ -1,12 +1,13 @@
 import './App.css';
-import {Header, Content, FormGroup} from './components'
+import {Header, Content} from './components'
 
 import {Switch, BrowserRouter as Router, Route} from 'react-router-dom'
 
 import {
   Home,
   Collection,
-  Creator
+  Creator,
+  Image
 } from './Pages'
 
 function App() {
@@ -27,6 +28,9 @@ function App() {
             </Route>
             <Route path="/home">
               <Home/>
+            </Route>
+            <Route path="/image/:id">
+              <Image/>
             </Route>
             <Route path="/">
               <Home/>

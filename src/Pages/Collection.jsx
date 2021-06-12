@@ -24,17 +24,30 @@ const Collection = () => {
                <div className="col-3">
                     <h4>Categoria</h4>
                     <hr />
-                    <Folder/>
-                    <Folder/>
-                    <Folder/>
-                    <Folder/>
-                    <Folder/>
-                    <Folder/>
-                    <Folder/>
-                    <h4 className="mt-5">Moneda</h4>
+                    <Folder 
+                        name="Linea Clásica"/>
+                    <Folder 
+                        name="Linea Deportiva"/>
+                    <Folder 
+                        name="Linea Bioenergetica"/>
+                    <Folder 
+                        name="Lina Metalizada"/>
+                    <Folder 
+                        name="Edicion Especial"/>
+                    <Folder 
+                        name="Linea Powernet"/>
+                    <Folder 
+                        name="Otros"/>
+                    
+                    <h4 className="mt-4">Moneda</h4>
                     <hr />
-                    <Folder/>
-                    <Folder/>
+                    <Folder name="Pesos"/>
+                    <Folder name="Dolares"/>
+
+                    <h4 className="mt-4">Forma de Venta</h4>
+                    <hr />
+                    <Folder name="Por Mayor"/>
+                    <Folder name="Publico"/>
                </div>
                <div className="col-9">
                    <h1 className="mb-4">Linea Clásica por mayor (PESOS)</h1>

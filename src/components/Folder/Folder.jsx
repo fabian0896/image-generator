@@ -2,7 +2,7 @@ import React from 'react'
 import './Folder.css'
 import {useHistory, useLocation} from 'react-router-dom'
 
-const Folder = () => {
+const Folder = ({name}) => {
     const history = useHistory()
     const location = useLocation()
 
@@ -18,7 +18,7 @@ const Folder = () => {
         <div onClick={handleClick} className="Folder mb-1">
             <div className="Folder-content">
                 <i className="fas fa-cube"></i>
-                <h6>Linea Clásica</h6>
+                <h6>{name}</h6>
             </div>
         </div>
     )

@@ -256,7 +256,13 @@ export class Imaginator {
         this.onSelectedCallBack = callback
     }
 
-    removeElement(object){
+    async removeElement(object, deleteFunction){
+        const src = object.getSrc()
+        const isInMemory = src.startsWith('blob:')
+        if(!isInMemory){
+            console.log("se va a eliminar la imagen del storage")
+            deleteFunction && await deleteFunction(src)
+        }
         this.canvas.remove(object)
     }
 
@@ -744,6 +750,7 @@ export class BackgoundRemover {
             cssOnly: true
         })
         this.canvas = canvas
+        this.flip = false
     }
 
     async uploadImage(file) {    
@@ -833,6 +840,13 @@ export class BackgoundRemover {
         rect.setPositionByOrigin(pos, 'center', 'center')
         group.addWithUpdate(rect)
         image.clipPath = group
+        this.canvas.renderAll()
+    }
+
+    flipImage(){
+        if(!this.currentImage) return
+        this.flip = !this.flip
+        this.currentImage.set('flipX', this.flip)
         this.canvas.renderAll()
     }
 

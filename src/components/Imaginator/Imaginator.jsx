@@ -35,11 +35,19 @@ const Imaginator = React.forwardRef((props, ref) => {
     const handleChangeHooks = (value) => {
         props.onChangeHooks(value)
     }
+    const handleDeleteImage = () => {
+        props.onDeleteImage(props.selection)
+    }
     return (
          <div>
              <canvas ref={ref}></canvas>
              <div className="Imaginator-controls-container">
-                 <div></div>
+                 {
+                     props.selection?
+                     <button onClick={handleDeleteImage} className="btn btn-danger">Eliminar Imagen</button>
+                     :
+                     <div></div>
+                 }
                  <ButtonGroup onChange={handleChangeHooks}/>
              </div>
          </div>

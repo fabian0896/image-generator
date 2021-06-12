@@ -64,8 +64,8 @@ const FormGroup = ({editData, mode}) => {
         imaginator.addHooksImage(hooks)
     }
 
-    const handleDeleteIamge = () => {
-        imaginator.removeImage(imaginator.selection)
+    const handleDeleteIamge = (image) => {
+        imaginator.removeImage(image)
     }
     
    
@@ -84,17 +84,11 @@ const FormGroup = ({editData, mode}) => {
                 <button disabled={!imaginator} onClick={handleSaveData} className="btn btn-primary form-control mt-4">{mode === 'edit'? 'Editar' : 'Guardar'}</button>
             </div>
             <div className="col-md-8 col-sm-12">
-            <Imaginator onChangeHooks={handleChangeHooks} ref={ref}/>
-                {
-                    /*
-                    false ?
-                        <Imaginator
-                            ref={ref}
-                            initValues={productValues} />
-                        :
-                        <Canvas />
-                        */
-                }
+                <Imaginator
+                    onDeleteImage={handleDeleteIamge}
+                    selection={imaginator.selection} 
+                    onChangeHooks={handleChangeHooks} 
+                    ref={ref}/>
             </div>
         </div>
     )

@@ -46,6 +46,11 @@ const updateStorageImage = async (blob, url) => {
     const snap = await storageRef.put(blob)
     return snap.ref.getDownloadURL()
 }
+const deleteStorageImage = async (url) => {
+    const storageRef = firebase.storage().refFromURL(url)
+    await storageRef.delete()
+    return
+} 
 
 const getCategories = async () => {
     const db = firebase.firestore().collection('config')
@@ -60,5 +65,6 @@ export default {
     getImageById,
     updateImage,
     updateStorageImage,
-    getCategories
+    getCategories,
+    deleteStorageImage
 }

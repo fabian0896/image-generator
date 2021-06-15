@@ -1,26 +1,27 @@
-import React from 'react'
+import React, {useState} from 'react'
 import './Folder.css'
 import {useHistory, useLocation} from 'react-router-dom'
+import clsx from 'clsx'
 
-const Folder = ({name}) => {
-    const history = useHistory()
-    const location = useLocation()
+const Folder = ({name, categoryValue, target, icon, selection, onChange}) => {
 
-    const handleClick = () => {
-        const urlParams = new URLSearchParams(location.search)
-        urlParams.set('category', 'clasica')
-        history.push({
-            pathname: '/collection',
-            search: urlParams.toString()
-        })
+    const handleChange = (e) => {
+        onChange(e.target.value)
     }
+
     return (
-        <div onClick={handleClick} className="Folder mb-1">
-            <div className="Folder-content">
-                <i className="fas fa-cube"></i>
-                <h6>{name}</h6>
+        <label className={clsx("Folder mb-2", {selected: selection === categoryValue})}>
+            <div className={clsx("Folder-content")}>
+                <input 
+                    value={categoryValue} 
+                    checked={selection === categoryValue} 
+                    onChange={handleChange} 
+                    type="radio" 
+                    name={target} />
+                <i className={icon}></i>
+                <p>{name}</p>
             </div>
-        </div>
+        </label>
     )
 }
 

@@ -1,0 +1,133 @@
+{
+    "categories":[
+        {
+            "name": "Linea Clasica",
+            "value": "clasica",
+            "iconClass": "fas fa-cube"
+        },
+        {
+            "name": "Linea Deportiva",
+            "value": "deportiva",
+            "iconClass": "fas fa-cube"
+        },
+        {
+            "name": "Linea Metalizada",
+            "value": "metalizada",
+            "iconClass": "fas fa-cube"
+        },
+        {
+            "name": "Linea Especial",
+            "value": "especial",
+            "iconClass": "fas fa-cube"
+        },
+        {
+            "name": "Linea Powernet",
+            "value": "powernet",
+            "iconClass": "fas fa-cube"
+        },
+        {
+            "name": "Linea Bioenergetica",
+            "value": "bioenergetica",
+            "iconClass": "fas fa-cube"
+        },
+        {
+            "name": "Otros",
+            "value": "other",
+            "iconClass": "fas fa-cube"
+        }
+    ],
+    "currencies": [
+        {
+            "name": "Pesos",
+            "value": "COP",
+            "iconClass": "fas fa-money-bill"
+        },
+        {
+            "name": "Dolares",
+            "value": "USD",
+            "iconClass": "fas fa-money-bill"
+        }
+    ],
+    "colors":[
+        {
+            "value": "#292926",
+            "metalic": false
+        },
+        {
+            "value": "#E0CAB3",
+            "metalic": false
+        },
+        {
+            "value": "#CD4D8D",
+            "metalic": false
+        },
+        {
+            "value": "#148ED5",
+            "metalic": false
+        },
+        {
+            "value": "#FF9291",
+            "metalic": false
+        },
+        {
+            "value": "#9550AF",
+            "metalic": false
+        },
+        {
+            "value": "#C44545",
+            "metalic": false
+        },
+        {
+            "value": "#3760BF",
+            "metalic": false
+        },
+        {
+            "value": "#157FB8",
+            "metalic": false
+        },
+        {
+            "value": "#BA3867",
+            "metalic": false
+        },
+        {
+            "value": "#EFDF41",
+            "metalic": false
+        },
+        {
+            "value": "#79437F",
+            "metalic": true
+        },
+        {
+            "value": "#A82752",
+            "metalic": true
+        },
+        {
+            "value": "#18378A",
+            "metalic": true
+        },
+        {
+            "value": "#335167",
+            "metalic": true
+        },
+        {
+            "value": "#292926",
+            "metalic": true
+        },
+        {
+            "value": "#E0CAB3",
+            "metalic": true
+        }
+    ],
+    "selltypes":[
+        {
+            "name": "Por Mayor",
+            "value": "wholesale",
+            "iconClass": "fas fa-building"
+        },
+        {
+            "name": "Al Publico",
+            "value": "retail",
+            "iconClass": "fas fa-user-friends"
+        }
+    ]
+}

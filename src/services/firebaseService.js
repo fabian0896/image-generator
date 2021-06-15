@@ -59,6 +59,19 @@ const getCategories = async () => {
     return snap.data()
 }
 
+
+const getImagesByFiltes = async (filters) => {
+    const db = firebase.firestore().collection(IMAGES)
+    let query = db
+    Object.keys(filters).forEach(filterName => {
+        query = query.where(filterName, '==', filters[filterName])
+    })
+    query = query.limit(20)
+    const snap = await query.get()
+    const results =  snap.docs.map(doc => doc.data())
+    return results
+}
+
 export default {
     addImageToDB,
     getAllImages,
@@ -66,5 +79,6 @@ export default {
     updateImage,
     updateStorageImage,
     getCategories,
-    deleteStorageImage
+    deleteStorageImage,
+    getImagesByFiltes
 }

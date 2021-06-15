@@ -5,80 +5,12 @@ import { useFormik } from 'formik'
 import ColorSelect from './ColorSelect'
 
 import './ProductForm.css'
-
-const colors = [
-    {
-        value: '#292926',
-        metalic: false
-    },
-    {
-        value: '#E0CAB3',
-        metalic: false
-    },
-    {
-        value: '#CD4D8D',
-        metalic: false
-    },
-    {
-        value: '#148ED5',
-        metalic: false
-    },
-    {
-        value: '#FF9291',
-        metalic: false
-    },
-    {
-        value: '#9550AF',
-        metalic: false
-    },
-    {
-        value: '#C44545',
-        metalic: false
-    },
-    {
-        value: '#3760BF',
-        metalic: false
-    },
-    {
-        value: '#157FB8',
-        metalic: false
-    },
-    {
-        value: '#BA3867',
-        metalic: false
-    },
-    {
-        value: '#EFDF41',
-        metalic: false
-    },
-    {
-        value: '#79437F',
-        metalic: true
-    },
-    {
-        value: '#A82752',
-        metalic: true
-    },
-    {
-        value: '#18378A',
-        metalic: true
-    },
-    {
-        value: '#335167',
-        metalic: true
-    },
-    {
-        value: '#292926',
-        metalic: true
-    },
-    {
-        value: '#E0CAB3',
-        metalic: true
-    },
-]
+import { useConfig } from '../../hooks';
 
 
 const ProductForm = ({ onSubmit, editData }) => {
+
+    const config = useConfig()
 
     const formik = useFormik({
         initialValues: {
@@ -177,6 +109,22 @@ const ProductForm = ({ onSubmit, editData }) => {
 
             <div className="ProductForm-sell-type-container mb-3">
                 <div className="btn-group" role="group">
+                    {
+                        config.selltypes.map((selltype)=>(
+                            <React.Fragment key={selltype.value}>
+                                <input
+                                    checked={formik.values.selltype === selltype.value}
+                                    value={selltype.value} onChange={formik.handleChange}
+                                    type="radio" 
+                                    className="btn-check"
+                                    name="selltype"
+                                    id={selltype.value} />
+                                <label className="btn btn-outline-primary" htmlFor={selltype.value}>{selltype.name}</label>
+                            </React.Fragment>
+                        ))
+                    }
+                </div>
+                {/* <div className="btn-group" role="group">
                     <input
                         checked={formik.values.selltype === "wholesale"}
                         value="wholesale" onChange={formik.handleChange}
@@ -194,7 +142,7 @@ const ProductForm = ({ onSubmit, editData }) => {
                         id="retail"
                         autoComplete="off" />
                     <label className="btn btn-outline-primary" htmlFor="retail">Publico</label>
-                </div>
+                </div> */}
             </div>
 
 
@@ -202,13 +150,11 @@ const ProductForm = ({ onSubmit, editData }) => {
                 <label htmlFor="category" className="form-label">Categoria</label>
                 <select value={formik.values.category} onChange={formik.handleChange} name="category" id="category" className="form-select  mb-3">
                     <option defaultValue>selecciona una categoria</option>
-                    <option value="clasica">Clásica</option>
-                    <option value="deportiva">Deportiva</option>
-                    <option value="metalizada">Metalizada</option>
-                    <option value="especial">Especial</option>
-                    <option value="powernet">Powernet</option>
-                    <option value="bioenergetica">Bioenergetica</option>
-                    <option value="other">Otra</option>
+                    {
+                        config.categories.map((category, index)=>(
+                            <option key={index} value={category.value}>{category.name}</option>
+                        ))
+                    }
                 </select>
             </div>
 
@@ -232,7 +178,7 @@ const ProductForm = ({ onSubmit, editData }) => {
 
             <ColorSelect
                 label="Color de fondo"
-                colors={colors}
+                colors={config.colors}
                 onChange={handleChangeColor}
                 value={formik.values.color}
             />

@@ -1,58 +1,52 @@
 import React, { useEffect, useState } from 'react'
-import firebaseService from '../services/firebaseService'
-import {ImageCard, Folder} from '../components'
+import {ImageCard, ButtonSelect} from '../components'
 import {useLocation} from 'react-router-dom'
+import { useConfig, useQueries } from '../hooks'
 
 const Collection = () => {
-    const [images, setImages] = useState([])
+    const config = useConfig()
+    const [images, getImages, loading] = useQueries()
+    const [queryValues, setQueryValues] = useState({})
     const location = useLocation()
-    useEffect(()=>{
-        const fetchFunction = async () => {
-            const data = await firebaseService.getAllImages()
-            setImages(data)
-        }
-        fetchFunction()
-    },[])
+    
 
     useEffect(()=>{
-        console.log(location.search)
+        const searchData = new URLSearchParams(location.search)   
+        const values = {}
+        for(let value of searchData.keys()){
+            values[value] = searchData.get(value)
+        }
+        setQueryValues(values)
+        getImages(values)
     },[location])
+
 
     return (
         <div>
             <div className="row">
                <div className="col-3">
-                    <h4>Categoria</h4>
-                    <hr />
-                    <Folder 
-                        name="Linea Clásica"/>
-                    <Folder 
-                        name="Linea Deportiva"/>
-                    <Folder 
-                        name="Linea Bioenergetica"/>
-                    <Folder 
-                        name="Lina Metalizada"/>
-                    <Folder 
-                        name="Edicion Especial"/>
-                    <Folder 
-                        name="Linea Powernet"/>
-                    <Folder 
-                        name="Otros"/>
-                    
-                    <h4 className="mt-4">Moneda</h4>
-                    <hr />
-                    <Folder name="Pesos"/>
-                    <Folder name="Dolares"/>
-
-                    <h4 className="mt-4">Forma de Venta</h4>
-                    <hr />
-                    <Folder name="Por Mayor"/>
-                    <Folder name="Publico"/>
-               </div>
+                    <ButtonSelect
+                        selection={queryValues}
+                        name="category"
+                        title="Linea"
+                        values={config.categories}/>
+                    <ButtonSelect
+                        selection={queryValues}
+                        name="price.currency"
+                        title="Moneda" 
+                        values={config.currencies}/>
+                    <ButtonSelect
+                        selection={queryValues} 
+                        name="selltype"
+                        title="Modo de Venta"
+                        values={config.selltypes}/>       
+                </div>         
                <div className="col-9">
-                   <h1 className="mb-4">Linea Clásica por mayor (PESOS)</h1>
                    <div className="row">
                         {
+                            loading?
+                            <p>Cargando imagenes...</p>
+                            :
                             images.map(image =>(
                                 <div key={image.id} className="col-4">
                                     <ImageCard  data={image}/>

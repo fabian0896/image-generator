@@ -136,6 +136,9 @@ const useImaginator = (canvasId) => {
 
     const loadFromJSON =  async (json) => {
         await canvas.current.loadFromJSON(json)
+        const imgCount = canvas.current.imageCount()
+        console.log(imgCount)
+        setImageCount(imgCount)
     }
 
 

@@ -2,10 +2,29 @@ import React, { useCallback, useEffect } from 'react'
 import NumberFormat from 'react-number-format';
 import { useFormik } from 'formik'
 
+
 import ColorSelect from './ColorSelect'
 
 import './ProductForm.css'
 import { useConfig } from '../../hooks';
+
+import * as Yup from 'yup'
+
+const validationSchema = Yup.object().shape({
+    productName: Yup.string().required(),
+    ref: Yup.string().required(),
+    price: Yup.object().shape({
+        value: Yup.string().required(),
+        currency: Yup.string().required()
+    }),
+    phone: Yup.string(),
+    color: Yup.object().shape({
+        metalic: Yup.boolean().required(),
+        value: Yup.string().required()
+    }),
+    category: Yup.string().required(),
+    selltype: Yup.string().required()
+})
 
 
 const ProductForm = ({ onSubmit, editData }) => {
@@ -25,6 +44,7 @@ const ProductForm = ({ onSubmit, editData }) => {
             category: '',
             selltype: 'wholesale'
         },
+        validationSchema,
         onSubmit: (values) => {
             onSubmit && onSubmit(values)
         }
@@ -183,7 +203,7 @@ const ProductForm = ({ onSubmit, editData }) => {
                 value={formik.values.color}
             />
 
-            <button type="submit" className="btn btn-primary form-control mt-3">Guardar Info</button>
+            <button disabled={!formik.isValid} type="submit" className="btn btn-primary form-control mt-3">Guardar Info</button>
 
         </form>
     )

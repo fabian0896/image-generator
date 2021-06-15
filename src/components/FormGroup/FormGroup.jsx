@@ -9,6 +9,7 @@ import {
     AcordionItem,
 } from '../../components'
 import { useImaginator } from '../../hooks'
+import { useHistory } from 'react-router-dom'
 
 
 
@@ -16,6 +17,8 @@ const FormGroup = ({editData, mode}) => {
     const [productValues, setProductValues] = useState(null)
     const [collapse, setCollapse] = useState(1)
     const ref =  useRef(null)
+
+    const history = useHistory()
 
     const imaginator = useImaginator(ref)
 
@@ -31,25 +34,27 @@ const FormGroup = ({editData, mode}) => {
         setCollapse(value)
     }
 
-    const handleSubmit = (values) => {
+    const handleSubmit = async (values) => {
         console.log('Aqui hay que actualizar los datos del canvas', values)
         setProductValues(values) 
-        imaginator.render(values)
+        await imaginator.render(values)
         setCollapse(2)   
     }
 
-    const handleSaveData = () => {
+    const handleSaveData = async () => {
         console.log("hay que generar la imagen")
 
         if(mode === 'edit'){
             if(editData){
-                imaginator.updateImage(productValues)
+                await imaginator.updateImage(productValues)
             }else{
-                imaginator.saveImage(productValues)
+                await imaginator.saveImage(productValues)
             }
         }else{
-            imaginator.saveImage(productValues)
+            await imaginator.saveImage(productValues)
         }
+
+        navigateToCollection(productValues)
     }
 
     useEffect(()=>{
@@ -69,6 +74,17 @@ const FormGroup = ({editData, mode}) => {
     }
     
    
+    const navigateToCollection = (values) => {
+        const urlParams = new URLSearchParams()
+        urlParams.append('category', values.category)
+        urlParams.append('price.currency', values.price.currency)
+        urlParams.append('selltype', values.selltype)
+        history.push({
+            pathname: '/collection',
+            search: urlParams.toString()
+
+        })
+    }
 
     return (
         <div className="row">
@@ -81,7 +97,7 @@ const FormGroup = ({editData, mode}) => {
                         <ImageRemover onSave={handleSaveImage} />
                     </AcordionItem>
                 </Acordion>
-                <button disabled={!imaginator} onClick={handleSaveData} className="btn btn-primary form-control mt-4">{mode === 'edit'? 'Editar' : 'Guardar'}</button>
+                <button disabled={!productValues || (imaginator.imageCount < 1)} onClick={handleSaveData} className="btn btn-primary form-control mt-4">{mode === 'edit'? 'Editar' : 'Guardar'}</button>
             </div>
             <div className="col-md-8 col-sm-12">
                 <Imaginator

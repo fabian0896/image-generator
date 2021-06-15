@@ -60,16 +60,35 @@ const getCategories = async () => {
 }
 
 
+
+const next =  (query, lastVisible) => async () => {
+    const nextSnap = await query.startAfter(lastVisible).get()
+    const data = nextSnap.docs.map(doc => doc.data())
+    const newLastVisible = nextSnap.docs[nextSnap.docs.length - 1]
+    return {
+        data,
+        next: newLastVisible? next(query, newLastVisible) : null
+    }
+}
+
 const getImagesByFiltes = async (filters) => {
     const db = firebase.firestore().collection(IMAGES)
     let query = db
     Object.keys(filters).forEach(filterName => {
         query = query.where(filterName, '==', filters[filterName])
     })
-    query = query.limit(20)
+    query = query.limit(15)
     const snap = await query.get()
     const results =  snap.docs.map(doc => doc.data())
-    return results
+
+    const lastVisible = snap.docs[snap.docs.length - 1]
+
+    const nextFunc = next(query, lastVisible)
+
+    return {
+        data: results,
+        next: nextFunc
+    }
 }
 
 export default {

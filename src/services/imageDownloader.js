@@ -34,6 +34,7 @@ const generateBlobps = async (data, options) => {
 }
 
 
+
 const folderOrder = ['selltype', 'price.currency', 'category']
 
 const orderByFolder = () => {
@@ -42,9 +43,9 @@ const orderByFolder = () => {
         presentsFiltersValues.push(findObjects(folder))
     }
     
-    console.log(presentsFiltersValues)
+    for(let values of presentsFiltersValues){
 
-
+    }
 }
 
 const findObjects = (propName) => {

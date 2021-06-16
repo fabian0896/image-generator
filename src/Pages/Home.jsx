@@ -1,7 +1,7 @@
 import React, {useState} from 'react'
 import { Modal } from '../components'
 import { useGetProduct } from '../hooks'
-import prepareDownload from '../services/prepareDownload'
+import imageDownloader from '../services/imageDownloader'
 
 const ID = "41AwZdwRJVMYlSOzvSQg"
 
@@ -10,13 +10,7 @@ const Home = () => {
     const [open, setOpen] = useState(false)
 
     const handleClick = async () => {
-        const images = await prepareDownload.generateBlobps(data, { whatsapp: false })
-        console.log(images)
-        const url = URL.createObjectURL(images.large)
-        const img = new Image()
-        img.src = url
-        img.width = 500
-        document.body.appendChild(img)
+        imageDownloader.generateZip()
     }
 
     const handleOpenModal = () => {
@@ -28,6 +22,10 @@ const Home = () => {
         setOpen(false)
     }
 
+    const handleTest = () => {
+        imageDownloader.orderByFolder()
+    }
+
     return (
         <div>
             <Modal
@@ -35,6 +33,7 @@ const Home = () => {
                 open={open}/>
             <button onClick={handleClick} className="btn btn-primary">Generar</button>
             <button onClick={handleOpenModal} className="btn btn-warning mx-4">Abrir Modal</button>
+            <button onClick={handleTest} className="btn btn-danger mx-4">Prueba de filtrado</button>
         </div>
     )
 }

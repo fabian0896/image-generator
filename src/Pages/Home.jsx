@@ -24,6 +24,7 @@ const Home = () => {
     }
 
     const handleCloseModal = () => {
+        console.log("se va a cerrar el modal")
         setOpen(false)
     }
 

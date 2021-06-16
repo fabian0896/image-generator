@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react'
 
 const Modal = ({open, onCancel}) => {
     const modal = useRef(null)
+    const closeBtn = useRef(null)
     useEffect(()=>{
         if(open){
             const btn = document.createElement('button')
@@ -11,14 +12,20 @@ const Modal = ({open, onCancel}) => {
             btn.click()
             document.body.removeChild(btn)
             console.log("Click ")
+        }else{
+            closeBtn.current.click()
         }
     }, [open])
 
     useEffect(()=>{
-        modal.current.addEventListener('hidden.bs.modal', ()=>{
+        modal.current.addEventListener('hide.bs.modal', ()=>{
             onCancel && onCancel()
         })
     }, [])
+
+    const handleClose = () => {
+        onCancel && onCancel()
+    }
 
     return (
             <div ref={modal} id="modal-component" className="modal fade" tabIndex="-1">
@@ -32,7 +39,8 @@ const Modal = ({open, onCancel}) => {
                             <p>Modal body text goes here.</p>
                         </div>
                         <div className="modal-footer">
-                            <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button style={{display: 'none'}} ref={closeBtn} type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button  type="button" className="btn btn-secondary" onClick={handleClose}>Close</button>
                             <button type="button" className="btn btn-primary">Save changes</button>
                         </div>
                     </div>

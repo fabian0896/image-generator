@@ -8,9 +8,10 @@ import whatsappSVG from '../SVG/whatsapp.svg'
 
 
 export class Imaginator {
-    constructor(canvasId, width = 1140, height = 860) {
+    constructor(canvasId,{ width=1140, height=840, visible=true }) {
         this.width = width
         this.height = height
+        
         this.logo = {
             '#ffffff': logo_w_SVG,
             '#000000': logo_b_SVG
@@ -40,6 +41,10 @@ export class Imaginator {
         canvasElem.replaceWith(mainContainerElement)
         secondContainerElement.appendChild(canvasElem)
 
+        if(!visible){
+            mainContainerElement.style.display = 'none'
+        }
+
         const canvas = new fabric.Canvas(canvasId, {
             backgroundColor: '#fff',
             width,
@@ -48,7 +53,7 @@ export class Imaginator {
         canvas.selection = false
         canvas.setDimensions({
             width: '100%',
-            height: '100%'
+            height: '100%',
         }, {
             cssOnly: true
         })
@@ -138,7 +143,7 @@ export class Imaginator {
         this.objects.companyLogoObject = companyLogoObject
         companyLogoObject.set('id', 'companyLogo')
 
-        await this.renderSocials(whatsapp)
+        await this.renderSocials(whatsapp || this.defaultValues.whatsapp)
 
         // Textos para hacer referencias y poderlos editat mas adelante
         const priceText = new fabric.Textbox(`${(this.price.currency === 'USD') ? 'USD ' : ''}${this.price.value}`, {
@@ -283,7 +288,7 @@ export class Imaginator {
     async renderSocials(whatsapp) {
         this.objects.whatsappObject && this.canvas.remove(this.objects.whatsappObject)
         this.objects.whatsappLogoObject && this.canvas.remove(this.objects.whatsappLogoObject)
-        this.whatsapp = !whatsapp ? this.defaultValues.whatsapp : whatsapp
+        this.whatsapp = whatsapp
         if (this.whatsapp) {
             const whatsappLogoObject = await this.loadSVG(whatsappSVG, {
                 lockMovementX: true,
@@ -451,7 +456,9 @@ export class Imaginator {
         productNameRefObject && productNameRefObject.set('fill', TEXT_COLOR)
 
         const wpValue = props.hasOwnProperty('whatsapp') ? whatsapp : this.whatsapp
-        await this.renderSocials(wpValue)
+        if(props.hasOwnProperty('whatsapp')){
+            await this.renderSocials(wpValue)
+        }
 
         const productNameValue = props.hasOwnProperty('productName') ? productName : this.productName
         const refValue = props.hasOwnProperty('ref') ? ref : this.ref
@@ -696,6 +703,13 @@ export class Imaginator {
             const value = curr.type === 'image' ? 1 : 0
             return prev + value
         }, 0)
+    }
+
+    async renderAndGenerateBlob(json, values){
+        await this.loadFromJSON(json)
+        await this.render(values)
+        const images = await this.toDataURL({blobMode: true})
+        return images
     }
 
 }

@@ -5,7 +5,7 @@ import uploadImage from '../services/uploadImage'
 import firebaseService from '../services/firebaseService'
 
 
-const useImaginator = (canvasId) => {
+const useImaginator = (canvasId, options) => {
     const canvas = useRef(null)
     const [loading, setLoading] = useState(false)
     const [selection, setSelection] = useState(null)
@@ -14,7 +14,11 @@ const useImaginator = (canvasId) => {
     useEffect(() => {
 
         const canvasRef = typeof canvasId === 'object' ? canvasId.current : canvasId
-        const imaginator = new Imaginator(canvasRef, 1140, 840)
+        const imaginator = new Imaginator(canvasRef, {
+            width:1140,
+            height: 840,
+            ...options
+        })
         imaginator.setDefaultValues({whatsapp: '+57 318 2657709'})
         canvas.current = imaginator
         setLoading(false)
@@ -125,10 +129,10 @@ const useImaginator = (canvasId) => {
 
 
         //Genero la descarga de la imagen desde local
-        const link = document.createElement('a')
+        /* const link = document.createElement('a')
         link.href = URL.createObjectURL(images.large)
         link.download = canvas.current.productName
-        link.click()
+        link.click() */
 
         console.log("se guardaron los datos en la base de datos")
         //aqui toca pasar los datos a firebase
@@ -140,6 +144,16 @@ const useImaginator = (canvasId) => {
         console.log(imgCount)
         setImageCount(imgCount)
     }
+
+    const renderAndGenerateImage = async (data, options) => {
+        console.log(options)
+        const images = await canvas.current.renderAndGenerateBlob(data.editable, {
+            ...data,
+            background: data.color,
+            ...options
+        })
+        return images
+    }   
 
 
     return {
@@ -153,7 +167,8 @@ const useImaginator = (canvasId) => {
         saveImage,
         imageCount,
         loadFromJSON,
-        updateImage
+        updateImage,
+        renderAndGenerateImage
     }
 }
 

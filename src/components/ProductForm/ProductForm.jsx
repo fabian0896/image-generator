@@ -52,7 +52,9 @@ const ProductForm = ({ onSubmit, editData }) => {
 
     useEffect(()=>{
         if(!editData) return
+        console.log(editData)
         formik.setValues(editData)
+        formik.setTouched('color')
 
     }, [editData])
 
@@ -60,7 +62,7 @@ const ProductForm = ({ onSubmit, editData }) => {
         formik.setFieldValue('color', color)
     }, [])
 
-
+    
     return (
         <form onSubmit={formik.handleSubmit}>
             <div className="mb-3">

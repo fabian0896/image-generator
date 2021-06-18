@@ -39,7 +39,7 @@ const ProductForm = ({ onSubmit, editData }) => {
                 value: '',
                 currency: 'COP'
             },
-            phone: '',
+            phone: config.whatsapp,
             color: null,
             category: '',
             selltype: 'wholesale'

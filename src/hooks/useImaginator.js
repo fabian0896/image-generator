@@ -41,6 +41,7 @@ const useImaginator = (canvasId, options) => {
 
     const render = async (values) => {
         setLoading(true)
+        console.log(values.phone && parsePhoneNumber(values.phone, 'CO').formatInternational())
         await canvas.current.render({
             ...values,
             price: values.price,

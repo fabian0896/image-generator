@@ -1,0 +1,31 @@
+.CollectionHeader{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+
+.CollectionHeader-download-btn{
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    font-size: 20px;
+    transition: .2s;
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+.CollectionHeader-download-btn:hover{
+    background-image: linear-gradient(160deg, #0093E9 0%, #80D0C7 100%);
+    color: #fff;
+    border: none;
+    box-shadow: 3px 3px 15px rgba(0, 0, 0, .3);
+    transform: scale(1.005);
+}
+
+.CollectionHeader-download-btn:active{
+    transform: scale(0.97);
+}   

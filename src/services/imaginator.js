@@ -705,10 +705,24 @@ export class Imaginator {
         }, 0)
     }
 
-    async renderAndGenerateBlob(json, values){
+    async renderAndGenerateBlob(json, values, options={}){
         await this.loadFromJSON(json)
         await this.render(values)
+        if(options.hasOwnProperty('withWhatsapp') && !options.withWhatsapp){
+            this.canvas.remove(this.objects.whatsappObject)
+            this.canvas.remove(this.objects.whatsappLogoObject)
+        }else if(options.hasOwnProperty('withWhatsapp') && options.withWhatsapp){
+            this.renderSocials(options,this.whatsapp)
+        }
+
+
+        if(options.hasOwnProperty('price') && !options.price){
+            this.canvas.remove(this.objects.priceObject)
+        }
+        
+        this.canvas.renderAll()
         const images = await this.toDataURL({blobMode: true})
+        this.canvas.clear()
         return images
     }
 

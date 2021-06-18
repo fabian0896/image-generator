@@ -1,6 +1,7 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore'
 import 'firebase/storage'
+import algoliaService from './algoliaService'
 
 const IMAGES = 'images'
 
@@ -14,7 +15,7 @@ const addImageToDB = async (values) => {
         ...values,
         id
     })
-
+    await algoliaService.addRecord({...values, id})
     return id
 }
 
@@ -22,6 +23,7 @@ const updateImage = async (values) => {
     const db = firebase.firestore().collection(IMAGES)
     const doc = db.doc(values.id)
     await doc.update(values)
+    await algoliaService.updateRecord(values)
     return updateImage
 }
 
@@ -46,6 +48,7 @@ const updateStorageImage = async (blob, url) => {
     const snap = await storageRef.put(blob)
     return snap.ref.getDownloadURL()
 }
+
 const deleteStorageImage = async (url) => {
     const storageRef = firebase.storage().refFromURL(url)
     await storageRef.delete()
@@ -58,8 +61,6 @@ const getCategories = async () => {
     const snap = await doc.get()
     return snap.data()
 }
-
-
 
 const next =  (query, lastVisible) => async () => {
     const nextSnap = await query.startAfter(lastVisible).get()
@@ -102,6 +103,8 @@ const getAllImagesByFilter = async (filters) => {
 
     return results
 }
+
+
 
 export default {
     addImageToDB,

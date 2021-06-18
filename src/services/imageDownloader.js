@@ -1,8 +1,9 @@
 import {Imaginator} from './imaginator'
 import firebaseService from './firebaseService'
-import JSZip, { folder } from 'jszip'
+import JSZip from 'jszip'
 import {saveAs} from 'file-saver'
 import TEXT_DATA from '../textDaja.json'
+import queryService from './queryService'
 
 
 const generateBlobps = async (data, options) => {
@@ -70,12 +71,13 @@ const accessPorp = (obj, route) =>{
 
 
 
-const generateZip = async (filter, options, ) => {
-    const images = await firebaseService.getAllImagesByFilter({
+const generateZip = async (filter, options, progressFunc) => {
+    /* const images = await firebaseService.getAllImagesByFilter({
         'category': 'clasica', 
-    })
+    }) */
 
-    console.log(images)
+    const images = await queryService.getData('', filter, false)
+
 
     const canvas = document.createElement('canvas')
 
@@ -93,13 +95,19 @@ const generateZip = async (filter, options, ) => {
         const renderedImage = await imaginator.renderAndGenerateBlob(image.editable, {
             ...image,
             background: image.color,
-        })
+        }, options)
         folder.file(`${image.productName}.jpeg`, renderedImage.large, {base64: true})
+        count++
+        progressFunc && progressFunc({
+            count,
+            total: images.length
+        })
     }
 
     const zipContent = await zip.generateAsync({type: 'blob'})
 
     saveAs(zipContent, 'Prndas.zip')
+    return
     
 }
 

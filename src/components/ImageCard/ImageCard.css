@@ -1,6 +1,6 @@
 .ImageCard-container{
     border-radius: 5px;
-    box-shadow: 3px 3px 15px rgba(0, 0, 0, .3);
+    box-shadow: 1px 1px 20px rgba(0, 0, 0, .3);
     overflow: hidden;
     position: relative;
     cursor: pointer;

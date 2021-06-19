@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {FormGroup} from '../components'
+import {FormGroup, Loader} from '../components'
 import { useParams, useLocation} from 'react-router-dom'
 import { useGetProduct } from '../hooks'
 
@@ -17,7 +17,9 @@ const Creator = () => {
     return (
         <div>
             {
-                !loading &&
+                loading?
+                <Loader loading={true}/>
+                :
                 <FormGroup mode={mode} editData={data}/>
             }
         </div>

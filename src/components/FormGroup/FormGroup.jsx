@@ -7,6 +7,7 @@ import {
     Imaginator,
     Acordion,
     AcordionItem,
+    Loader
 } from '../../components'
 import { useImaginator } from '../../hooks'
 import { useHistory } from 'react-router-dom'
@@ -87,26 +88,29 @@ const FormGroup = ({editData, mode}) => {
     }
 
     return (
-        <div className="row">
-            <div className="col-md-4 col-sm-12">
-                <Acordion onChange={handleChangeAcordion} value={collapse} id="formAcordion">
-                    <AcordionItem title="Informacion De La Prenda">
-                        <ProductForm editData={editData} onSubmit={handleSubmit} />
-                    </AcordionItem>
-                    <AcordionItem disabled={!imaginator} title="Gestion De Fotos">
-                        <ImageRemover onSave={handleSaveImage} />
-                    </AcordionItem>
-                </Acordion>
-                <button disabled={!productValues || (imaginator.imageCount < 1)} onClick={handleSaveData} className="btn btn-primary form-control mt-4">{mode === 'edit'? 'Editar' : 'Guardar'}</button>
+        <React.Fragment>
+            <Loader loading={imaginator.loading}/>
+            <div className="row">
+                <div className="col-md-4 col-sm-12">
+                    <Acordion onChange={handleChangeAcordion} value={collapse} id="formAcordion">
+                        <AcordionItem title="Informacion De La Prenda">
+                            <ProductForm editData={editData} onSubmit={handleSubmit} />
+                        </AcordionItem>
+                        <AcordionItem disabled={!imaginator} title="Gestion De Fotos">
+                            <ImageRemover onSave={handleSaveImage} />
+                        </AcordionItem>
+                    </Acordion>
+                    <button disabled={!productValues || (imaginator.imageCount < 1)} onClick={handleSaveData} className="btn btn-primary form-control mt-4">{mode === 'edit'? 'Editar' : 'Guardar'}</button>
+                </div>
+                <div className="col-md-8 col-sm-12">
+                    <Imaginator
+                        onDeleteImage={handleDeleteIamge}
+                        selection={imaginator.selection} 
+                        onChangeHooks={handleChangeHooks} 
+                        ref={ref}/>
+                </div>
             </div>
-            <div className="col-md-8 col-sm-12">
-                <Imaginator
-                    onDeleteImage={handleDeleteIamge}
-                    selection={imaginator.selection} 
-                    onChangeHooks={handleChangeHooks} 
-                    ref={ref}/>
-            </div>
-        </div>
+        </React.Fragment>
     )
 }
 

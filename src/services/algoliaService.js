@@ -44,7 +44,7 @@ const testSearch = async () => {
 }
 
 
-const search = async (query="", filters, limit) => {
+const search = async (query="", filters, limit=true) => {
     const filterArray = Object.keys(filters).reduce((arr, filter) => {
         if(!filters[filter].length) return arr
         const filterValues = filters[filter].map(v => `${filter}:${v}`)
@@ -60,6 +60,7 @@ const search = async (query="", filters, limit) => {
     }
 
     const result = await index.search(query, searchObject)
+    if(limit) return result
     return result.hits
 }
 

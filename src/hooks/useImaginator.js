@@ -52,7 +52,9 @@ const useImaginator = (canvasId, options) => {
     }
 
     const addHooksImage = async (hooks=0) => {
+        setLoading(true)
         await canvas.current.addVarianHook(hooks)
+        setLoading(false)
     }
 
 
@@ -70,6 +72,7 @@ const useImaginator = (canvasId, options) => {
 
 
     const saveImage = async (values) => {
+        setLoading(true)
         //convierto el canvas a JSOn para poder editarlo en el futuro
         const editJSON = await canvas.current.toJSON(async (image)=>{
             return await uploadImage(image)
@@ -101,10 +104,12 @@ const useImaginator = (canvasId, options) => {
         link.click()
 
         console.log("se guardaron los datos en la base de datos")
+        setLoading(false)
         //aqui toca pasar los datos a firebase
     }
 
     const updateImage = async (values) => {
+        setLoading(true)
         //convierto el canvas a JSOn para poder editarlo en el futuro
         const editJSON = await canvas.current.toJSON(async (image)=>{
             return await uploadImage(image)
@@ -136,14 +141,16 @@ const useImaginator = (canvasId, options) => {
         link.click() */
 
         console.log("se guardaron los datos en la base de datos")
+        setLoading(false)
         //aqui toca pasar los datos a firebase
     }
 
     const loadFromJSON =  async (json) => {
+        setLoading(true)
         await canvas.current.loadFromJSON(json)
         const imgCount = canvas.current.imageCount()
-        console.log(imgCount)
         setImageCount(imgCount)
+        setLoading(false)
     }
 
     const renderAndGenerateImage = async (data, options) => {

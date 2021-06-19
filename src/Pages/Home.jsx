@@ -1,29 +1,26 @@
 import React, {useState} from 'react'
-import { Modal } from '../components'
-import { useGetProduct } from '../hooks'
+import { Loader } from '../components'
 import algoliaService from '../services/algoliaService'
-import firebaseService from '../services/firebaseService'
 import imageDownloader from '../services/imageDownloader'
 
-const ID = "41AwZdwRJVMYlSOzvSQg"
+
 
 const Home = () => {
-    const [data] = useGetProduct(ID)
-    const [open, setOpen] = useState(false)
     const [testData, setTestData] = useState([])
+    const [loading, setLoading] = useState(false)
 
     const handleClick = async () => {
         imageDownloader.generateZip()
     }
 
-    const handleOpenModal = () => {
-        setOpen(true)
+
+    const handleLoading = () => {
+        setLoading(true)
+        setTimeout(()=>{
+            setLoading(false)
+        }, 5000)
     }
 
-    const handleCloseModal = () => {
-        console.log("se va a cerrar el modal")
-        setOpen(false)
-    }
 
     const handleTest =  async () => {
         console.log("test button")
@@ -38,11 +35,9 @@ const Home = () => {
 
     return (
         <div>
-            <Modal
-                onCancel={handleCloseModal} 
-                open={open}/>
+            <Loader loading={loading}/>
             <button onClick={handleClick} className="btn btn-primary">Generar</button>
-            <button onClick={handleOpenModal} className="btn btn-warning mx-4">Abrir Modal</button>
+            <button onClick={handleLoading} className="btn btn-warning mx-4">Abrir Modal</button>
             <button onClick={handleTest} className="btn btn-danger mx-4">Prueba de Algolia</button>
             {
                 testData.map((res)=>(

@@ -25,7 +25,7 @@ const FilterSelectionForm = ({ initValues, closeModal, onSubmit }) => {
     })
 
     useEffect(() => {
-        initValues && formik.setValues(initValues)
+        initValues && formik.setFieldValue('filters', initValues)
     }, [initValues])
 
     const handleClose = () => {

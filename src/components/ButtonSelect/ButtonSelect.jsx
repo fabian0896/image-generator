@@ -29,6 +29,7 @@ const ButtonSelect = ({values, title, name, selection }) => {
 
     
     useEffect(()=>{
+        if(!selection) return
         const isEqual = _.isEqual(selection[name], formik.values[name])
         if(!isEqual && selection[name]){
             formik.setFieldValue(name, selection[name])

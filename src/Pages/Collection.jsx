@@ -13,7 +13,7 @@ import { useConfig, useQueries } from '../hooks'
 import imageDownloader from '../services/imageDownloader'
 
 const Collection = () => {
-    const [queryValues, setQueryValues] = useState({})
+    const [queryValues, setQueryValues] = useState(null)
     const [modalOpen, setModalOpen] = useState(false)
     const [loadState, setLoadState] = useState(null)
     
@@ -33,9 +33,9 @@ const Collection = () => {
     useEffect(()=>{
         const searchData = new URLSearchParams(location.search)   
         const filters = {
-            category: searchData.getAll('category'),
-            selltype: searchData.getAll('selltype'),
-            currency: searchData.getAll('currency')
+            category: searchData.getAll('category') || [],
+            selltype: searchData.getAll('selltype') || [],
+            currency: searchData.getAll('currency') || []
         }
         const query = decodeURI(searchData.get('search') || '')
         setQueryValues(filters)
@@ -85,7 +85,9 @@ const Collection = () => {
                         loadState?
                         <ProgressBar progress={loadState} />
                         :
-                        <FilterSelectionForm onSubmit={handleDownloadSubmit}/>
+                        <FilterSelectionForm
+                            initValues={queryValues} 
+                            onSubmit={handleDownloadSubmit}/>
                     }
             </Modal>
             <div className="row">

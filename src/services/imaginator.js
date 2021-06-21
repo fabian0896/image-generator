@@ -364,6 +364,7 @@ export class Imaginator {
                     if (!id) return
                     this.objects[id + 'Object'] = obj
                 })
+                this.objects.hooksObject && this.objects.hooksObject.bringToFront()
                 callback && callback()
                 this.canvas.renderAll.bind(this.canvas)
                 console.log("JSON loaded!")
@@ -706,15 +707,18 @@ export class Imaginator {
     }
 
     async renderAndGenerateBlob(json, values, options={}){
+        this.canvas.clear()
+        this.objects = {}
         await this.loadFromJSON(json)
         await this.render(values)
         if(options.hasOwnProperty('withWhatsapp') && !options.withWhatsapp){
             this.canvas.remove(this.objects.whatsappObject)
             this.canvas.remove(this.objects.whatsappLogoObject)
         }else if(options.hasOwnProperty('withWhatsapp') && options.withWhatsapp){
-            this.renderSocials(options,this.whatsapp)
+            console.log("Se esta escribiendo el whatsapp")
+            this.renderSocials(options.whatsapp)
         }
-
+        
 
         if(options.hasOwnProperty('price') && !options.price){
             this.canvas.remove(this.objects.priceObject)

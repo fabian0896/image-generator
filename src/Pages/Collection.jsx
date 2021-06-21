@@ -6,7 +6,8 @@ import {
     Modal, 
     FilterSelectionForm,
     ProgressBar,
-    Paginator
+    Paginator,
+    Loader
 } from '../components'
 import {useLocation, useHistory} from 'react-router-dom'
 import { useConfig, useQueries } from '../hooks'
@@ -26,7 +27,8 @@ const Collection = () => {
         getData: getImages,
         pages,
         setPage,
-        activePage
+        activePage,
+        loading
     } = useQueries()
 
 
@@ -76,7 +78,7 @@ const Collection = () => {
 
     return (
         <div>
-           
+           <Loader loading={loading}/>
             <Modal
                 title="Descarga De Imagenes"
                 onCancel={handleCloseModal} 

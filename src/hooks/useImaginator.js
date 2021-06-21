@@ -41,12 +41,17 @@ const useImaginator = (canvasId, options) => {
 
     const render = async (values) => {
         setLoading(true)
-        console.log(values.phone && parsePhoneNumber(values.phone, 'CO').formatInternational())
+        const isWhatsapp = !!values.phone && parsePhoneNumber(values.phone, 'CO').formatInternational()
+        console.log(isWhatsapp)
+        const whatsappObject = {}
+        if(isWhatsapp){
+            whatsappObject.whatsapp = isWhatsapp
+        }
         await canvas.current.render({
             ...values,
             price: values.price,
-            whatsapp: values.phone && parsePhoneNumber(values.phone, 'CO').formatInternational(),
-            background: values.color
+            background: values.color,
+            ...whatsappObject
         })
         setLoading(false)
     }
@@ -71,7 +76,7 @@ const useImaginator = (canvasId, options) => {
     }
 
 
-    const saveImage = async (values) => {
+    const saveImage = async (values, {download=false}) => {
         setLoading(true)
         //convierto el canvas a JSOn para poder editarlo en el futuro
         const editJSON = await canvas.current.toJSON(async (image)=>{
@@ -98,10 +103,12 @@ const useImaginator = (canvasId, options) => {
 
 
         //Genero la descarga de la imagen desde local
-        const link = document.createElement('a')
-        link.href = URL.createObjectURL(images.large)
-        link.download = canvas.current.productName
-        link.click()
+        if(download){
+            const link = document.createElement('a')
+            link.href = URL.createObjectURL(images.large)
+            link.download = canvas.current.productName
+            link.click()
+        }
 
         console.log("se guardaron los datos en la base de datos")
         setLoading(false)

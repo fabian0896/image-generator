@@ -4,6 +4,8 @@ import {  useHistory, useLocation} from 'react-router-dom'
 import { useFormik } from 'formik'
 import _ from 'lodash'
 
+import './ButtonSelect.css'
+
 const ButtonSelect = ({values, title, name, selection }) => {
     const history = useHistory()
     const location = useLocation()
@@ -16,6 +18,9 @@ const ButtonSelect = ({values, title, name, selection }) => {
 
 
     useEffect(()=>{
+        if(!selection) return
+        const isEqual = _.isEqual(selection[name], formik.values[name])
+        if(isEqual) return
         const urlParams = new URLSearchParams(location.search)
         urlParams.delete(name)
         formik.values[name].forEach(value => {
@@ -36,9 +41,20 @@ const ButtonSelect = ({values, title, name, selection }) => {
         }
     },[selection])
 
+
+    const handleClear = () => {
+        formik.setFieldValue(name, [])
+    }
+
     return (
         <div className="mb-3">
-            <h4>{title}</h4>
+            <div className="ButtonSelect-header">
+                <h4>{title}</h4>
+                {
+                    !!formik.values[name].length &&
+                    <button onClick={handleClear} type="button" className="btn-close" aria-label="Close"></button>
+                }
+            </div>
             <hr />
             {
                 values.map(value=>(

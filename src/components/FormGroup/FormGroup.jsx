@@ -47,12 +47,12 @@ const FormGroup = ({editData, mode}) => {
 
         if(mode === 'edit'){
             if(editData){
-                await imaginator.updateImage(productValues)
+                await imaginator.updateImage(productValues, {download: false})
             }else{
-                await imaginator.saveImage(productValues)
+                await imaginator.saveImage(productValues, {download: false})
             }
         }else{
-            await imaginator.saveImage(productValues)
+            await imaginator.saveImage(productValues, {download: false})
         }
 
         navigateToCollection(productValues)
@@ -78,12 +78,11 @@ const FormGroup = ({editData, mode}) => {
     const navigateToCollection = (values) => {
         const urlParams = new URLSearchParams()
         urlParams.append('category', values.category)
-        urlParams.append('price.currency', values.price.currency)
+        urlParams.append('currency', values.price.currency)
         urlParams.append('selltype', values.selltype)
         history.push({
             pathname: '/collection',
             search: urlParams.toString()
-
         })
     }
 

@@ -1,30 +1,39 @@
-import React, {useState} from 'react'
+import React, { useEffect } from 'react'
 import { Folder } from '../../components'
 import {  useHistory, useLocation} from 'react-router-dom'
 import { useFormik } from 'formik'
+import _ from 'lodash'
 
-const ButtonSelect = ({values, title, name, selection}) => {
+const ButtonSelect = ({values, title, name, selection }) => {
     const history = useHistory()
     const location = useLocation()
 
     const formik = useFormik({
         initialValues:{
-            values: []
+            [name]: [] 
         }
     })
- 
-    const handleChange = (val) => {
-        addQueryParams(val)
-    }
 
-    const addQueryParams = (value) => {
+
+    useEffect(()=>{
         const urlParams = new URLSearchParams(location.search)
-        urlParams.set(name, value)
+        urlParams.delete(name)
+        formik.values[name].forEach(value => {
+            urlParams.append(name, value)
+        })
         history.push({
             pathname: '/collection',
             search: urlParams.toString()
         })
-    }
+    }, [formik.values])
+
+    
+    useEffect(()=>{
+        const isEqual = _.isEqual(selection[name], formik.values[name])
+        if(!isEqual && selection[name]){
+            formik.setFieldValue(name, selection[name])
+        }
+    },[selection])
 
     return (
         <div className="mb-3">
@@ -33,8 +42,8 @@ const ButtonSelect = ({values, title, name, selection}) => {
             {
                 values.map(value=>(
                     <Folder
-                        selection={selection[name]}
-                        onChange={handleChange}
+                        values={formik.values[name]}
+                        onChange={formik.handleChange}
                         icon={value.iconClass}
                         target={name}
                         categoryValue={value.value}

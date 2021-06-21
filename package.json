@@ -19,6 +19,7 @@
     "jsreport-browser-client-dist": "^1.3.0",
     "jszip": "^3.6.0",
     "libphonenumber-js": "^1.9.19",
+    "lodash": "^4.17.21",
     "marvinj": "^1.0.0",
     "numeral": "^2.0.6",
     "react": "^17.0.2",

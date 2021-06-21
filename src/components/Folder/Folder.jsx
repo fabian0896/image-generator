@@ -1,22 +1,17 @@
-import React, {useState} from 'react'
+import React from 'react'
 import './Folder.css'
-import {useHistory, useLocation} from 'react-router-dom'
 import clsx from 'clsx'
 
-const Folder = ({name, categoryValue, target, icon, selection, onChange}) => {
-
-    const handleChange = (e) => {
-        onChange(e.target.value)
-    }
+const Folder = ({name, categoryValue, target, icon, values, onChange}) => {
 
     return (
-        <label className={clsx("Folder mb-2", {selected: selection === categoryValue})}>
+        <label className={clsx("Folder mb-2", {selected: values.includes(categoryValue)})}>
             <div className={clsx("Folder-content")}>
                 <input 
                     value={categoryValue} 
-                    checked={selection === categoryValue} 
-                    onChange={handleChange} 
-                    type="radio" 
+                    checked={values.includes(categoryValue)} 
+                    onChange={onChange} 
+                    type="checkbox" 
                     name={target} />
                 <i className={icon}></i>
                 <p>{name}</p>

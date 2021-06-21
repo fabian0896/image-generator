@@ -5,9 +5,10 @@ import {
     CollectionHeader, 
     Modal, 
     FilterSelectionForm,
-    ProgressBar
+    ProgressBar,
+    Paginator
 } from '../components'
-import {useLocation} from 'react-router-dom'
+import {useLocation, useHistory} from 'react-router-dom'
 import { useConfig, useQueries } from '../hooks'
 import imageDownloader from '../services/imageDownloader'
 
@@ -17,18 +18,31 @@ const Collection = () => {
     const [loadState, setLoadState] = useState(null)
     
     const config = useConfig()
-    const [images, getImages, loading, next, hasMore] = useQueries()
     const location = useLocation()
+    const history = useHistory()
+
+    const {
+        data: images, 
+        getData: getImages,
+        pages,
+        setPage,
+        activePage
+    } = useQueries()
+
 
     useEffect(()=>{
         const searchData = new URLSearchParams(location.search)   
-        const values = {}
-        for(let value of searchData.keys()){
-            values[value] = searchData.get(value)
+        const filters = {
+            category: searchData.getAll('category'),
+            selltype: searchData.getAll('selltype'),
+            currency: searchData.getAll('currency')
         }
-        setQueryValues(values)
-        getImages(values)
+        const query = decodeURI(searchData.get('search') || '')
+        setQueryValues(filters)
+        getImages(query, filters)
     },[location])
+
+
 
     
     const handleOpenModal = ( ) => {
@@ -38,7 +52,6 @@ const Collection = () => {
     const handleCloseModal = ( ) => {
         setModalOpen(false)
     }
-
 
     const handleDownloadSubmit = async (values) => {
         console.log(values.options)
@@ -51,8 +64,19 @@ const Collection = () => {
         console.log("Se crearon las imagenes ")
     }
 
+    const handleSearch = (value) => {
+        const searchData = new URLSearchParams(location.search) 
+        const searchValue = encodeURI(value)
+        searchData.set('search', searchValue)
+        history.push({
+            pathname: '/collection',
+            search: searchData.toString()
+        })
+    }
+
     return (
         <div>
+           
             <Modal
                 title="Descarga De Imagenes"
                 onCancel={handleCloseModal} 
@@ -73,7 +97,7 @@ const Collection = () => {
                         values={config.categories}/>
                     <ButtonSelect
                         selection={queryValues}
-                        name="price.currency"
+                        name="currency"
                         title="Moneda" 
                         values={config.currencies}/>
                     <ButtonSelect
@@ -83,7 +107,7 @@ const Collection = () => {
                         values={config.selltypes}/>       
                 </div>         
                <div className="col-9">
-                   <CollectionHeader onClick={handleOpenModal}/>
+                   <CollectionHeader onSearch={handleSearch} onClick={handleOpenModal}/>
                     <div className="row">
                         
                                 {
@@ -94,10 +118,10 @@ const Collection = () => {
                                     ))   
                                 }
                     </div>
-                    {
-                        hasMore &&
-                        <button disabled={loading} onClick={next} className="btn btn-link form-control">Cargar Más...</button>
-                    }
+                    <Paginator
+                        active={activePage} 
+                        onChange={setPage} 
+                        pages={pages}/>
                </div>
             </div>
         </div>

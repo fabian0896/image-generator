@@ -44,7 +44,7 @@ const testSearch = async () => {
 }
 
 
-const search = async (query="", filters, limit=true) => {
+const search = async (query="", filters, limit=true, page=0) => {
     const filterArray = Object.keys(filters).reduce((arr, filter) => {
         if(!filters[filter].length) return arr
         const filterValues = filters[filter].map(v => `${filter}:${v}`)
@@ -52,7 +52,8 @@ const search = async (query="", filters, limit=true) => {
     },[])
 
     const searchObject = {
-        facetFilters: filterArray
+        facetFilters: filterArray,
+        page
     }
 
     if(!limit){

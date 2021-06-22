@@ -299,6 +299,7 @@ export class Imaginator {
                 obj.set('top', this.canvas.getHeight() - obj.getScaledHeight() - (this.PADDING * 1))
             })
             whatsappLogoObject.set('id', 'whatsappLogo')
+            whatsappLogoObject.bringToFront()
             const whatsappNumber = new fabric.Textbox(this.whatsapp, {
                 left: this.PADDING,
                 width: this.INFO_WIDTH - (this.PADDING * 3 + whatsappLogoObject.getScaledWidth()),
@@ -310,6 +311,7 @@ export class Imaginator {
                 selectable: false
             });
             whatsappNumber.set('id', 'whatsapp')
+            whatsappNumber.bringToFront()
             whatsappNumber.setPositionByOrigin({ x: (this.PADDING * 1.5 + whatsappLogoObject.getScaledWidth()), y: whatsappLogoObject.getCenterPoint().y }, 'left', 'center')
             this.canvas.add(whatsappNumber)
             this.objects.whatsappObject = whatsappNumber
@@ -715,8 +717,7 @@ export class Imaginator {
             this.canvas.remove(this.objects.whatsappObject)
             this.canvas.remove(this.objects.whatsappLogoObject)
         }else if(options.hasOwnProperty('withWhatsapp') && options.withWhatsapp){
-            console.log("Se esta escribiendo el whatsapp")
-            this.renderSocials(options.whatsapp)
+            await this.renderSocials(options.whatsapp)
         }
         
 

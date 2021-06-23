@@ -49,7 +49,7 @@ const testSearch = async () => {
 }
 
 
-const search = async (query="", filters, limit=true, page=0) => {
+const search = async (query="", filters={}, limit=true, page=0) => {
     const filterArray = Object.keys(filters).reduce((arr, filter) => {
         if(!filters[filter].length) return arr
         const filterValues = filters[filter].map(v => `${filter}:${v}`)

@@ -4,6 +4,7 @@ import firebaseService from "../services/firebaseService"
 const useGetProduct = (id) => {
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState(null)
+    
     useEffect(()=>{
         if(!id){
             setLoading(false)
@@ -16,7 +17,14 @@ const useGetProduct = (id) => {
         }
         fetchData()
     }, [])
-    return [data, loading]
+
+    const deleteFunc = async () => {
+        setLoading(true)
+        await firebaseService.deleteImage({id})
+        setLoading(false)
+    }
+
+    return [data, loading, deleteFunc]
 }
 
 export default useGetProduct

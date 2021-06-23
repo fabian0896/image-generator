@@ -34,6 +34,14 @@ const getAllImages = async () => {
     return res
 }
 
+const deleteImage = async (values) => {
+    const db = firebase.firestore().collection(IMAGES)
+    const doc = db.doc(values.id)
+    await algoliaService.deleteRecord(values)
+    await doc.delete()
+    return
+}
+
 
 const getImageById = async (id) => {
     const db = firebase.firestore().collection(IMAGES)
@@ -115,5 +123,6 @@ export default {
     getCategories,
     deleteStorageImage,
     getImagesByFiltes,
-    getAllImagesByFilter
+    getAllImagesByFilter,
+    deleteImage
 }

@@ -20,6 +20,11 @@ const addRecord = async (values) => {
     return
 }
 
+const deleteRecord = async ({id}) => {
+    console.log("Se va a eliminar ", id, " de Algolia")
+    await index.deleteObject(id)
+}
+
 const updateRecord = async (values) => {
     const { productName, category, price, selltype, id, ref } = values
     await index.partialUpdateObject({
@@ -70,5 +75,6 @@ export default {
     addRecord,
     updateRecord,
     testSearch,
-    search
+    search,
+    deleteRecord
 }

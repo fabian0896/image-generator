@@ -20,7 +20,7 @@ const selltype = {
 }
 
 
-const ImageShow = ({ data }) => {
+const ImageShow = ({ data, onDelete }) => {
 
     const history = useHistory()
 
@@ -48,6 +48,10 @@ const ImageShow = ({ data }) => {
         a.href = data.images.large
         a.download = data.productName
         a.click()
+    }
+
+    const handleDelete  = () => {
+        onDelete && onDelete()
     }
 
     return (
@@ -87,7 +91,7 @@ const ImageShow = ({ data }) => {
                     </div>
                     Clonar
                 </button>
-                <button className="btn btn-danger form-control mb-3">
+                <button onClick={handleDelete} className="btn btn-danger form-control mb-3">
                     <div className="pr-2">
                         <i className="fas fa-trash-alt pr-2"></i>
                     </div>

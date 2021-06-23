@@ -1,5 +1,4 @@
 import {Imaginator} from './imaginator'
-import firebaseService from './firebaseService'
 import JSZip from 'jszip'
 import {saveAs} from 'file-saver'
 import TEXT_DATA from '../textDaja.json'

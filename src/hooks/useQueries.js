@@ -1,4 +1,4 @@
-import {useEffect, useRef, useState} from 'react'
+import {useEffect, useState} from 'react'
 import queryService from '../services/queryService'
 
 const useQueries = () =>{

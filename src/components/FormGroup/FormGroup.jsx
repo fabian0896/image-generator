@@ -3,7 +3,6 @@ import React, { useEffect, useState, useRef } from 'react'
 import {
     ImageRemover,
     ProductForm,
-    Canvas,
     Imaginator,
     Acordion,
     AcordionItem,

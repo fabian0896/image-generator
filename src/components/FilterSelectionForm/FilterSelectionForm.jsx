@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { useConfig } from '../../hooks'
 import { useFormik } from 'formik'
+import LogoSelector from './LogoSelector'
 
 const FilterSelectionForm = ({ initValues, closeModal, onSubmit }) => {
     const config = useConfig()
@@ -15,7 +16,12 @@ const FilterSelectionForm = ({ initValues, closeModal, onSubmit }) => {
             options: {
                 withWhatsapp: true,
                 whatsapp: config.whatsapp,
-                price: true
+                price: true,
+                withLogo: false,
+                logo:{
+                    dark: null,
+                    light: null
+                }
             }
         },
         onSubmit: async (values, actions) => {
@@ -31,6 +37,10 @@ const FilterSelectionForm = ({ initValues, closeModal, onSubmit }) => {
     const handleClose = () => {
         formik.resetForm()
         closeModal()
+    }
+
+    const handleChangeLogo = (type) => (file) =>{ 
+        formik.setFieldValue(`options.logo.${type}`, file)
     }
 
     return (
@@ -122,6 +132,27 @@ const FilterSelectionForm = ({ initValues, closeModal, onSubmit }) => {
                     id="withPrice" />
                 <label className="form-check-label" htmlFor="withPrice">Con Precio</label>
             </div>
+            <div className="form-check form-switch mb-3">
+                <input
+                    checked={formik.values.options.withLogo}
+                    onChange={formik.handleChange}
+                    name="options.withLogo"
+                    className="form-check-input"
+                    type="checkbox"
+                    id="withLogo" />
+                <label className="form-check-label" htmlFor="withLogo">Cambiar logo</label>
+            </div>
+            {
+                formik.values.options.withLogo &&
+                <div className="row">
+                    <div className="col" align="center">
+                        <LogoSelector onChange={handleChangeLogo('dark')}/>
+                    </div>
+                    <div className="col" align="center">
+                        <LogoSelector onChange={handleChangeLogo('light')} dark={true}/>
+                    </div>
+                </div>
+            }
             <div className="modal-footer mt-3">           
                 <button type="button" className="btn btn-secondary" onClick={handleClose}>Close</button>
                 <button type="submit" className="btn btn-primary">Descargar</button>

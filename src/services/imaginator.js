@@ -725,12 +725,40 @@ export class Imaginator {
             this.canvas.remove(this.objects.priceObject)
         }
         
+        //Algoritmo para remplazar el logo
+        if(options.withLogo){
+            const logoColor = {
+                "#ffffff": options.logo.light,
+                "#000000": options.logo.dark
+            }
+            const logo = await this.loadSVGFromURL(logoColor[this.TEXT_COLOR])
+            const originlScale = this.objects.companyLogoObject.getObjectScaling()
+            const scaleValue = fabric.util.findScaleToFit(logo, this.objects.companyLogoObject)
+            logo.scale((scaleValue * originlScale.scaleX))
+            const pos = this.objects.companyLogoObject.getPointByOrigin('center', 'center')
+            logo.setPositionByOrigin(pos, 'center', 'center')
+            this.canvas.add(logo)
+            this.canvas.remove(this.objects.companyLogoObject)
+            this.objects.companyLogoObject = logo
+        }
+
+
+
+
         this.canvas.renderAll()
         const images = await this.toDataURL({blobMode: true})
         this.canvas.clear()
         return images
     }
 
+    loadSVGFromURL(url){
+        return new Promise(resolve => {
+            fabric.loadSVGFromURL(url, (objects, options) => {
+                const svgObj = fabric.util.groupSVGElements(objects, options);      
+                resolve(svgObj)
+            })
+        })
+    }
 }
 
 export class BackgoundRemover {

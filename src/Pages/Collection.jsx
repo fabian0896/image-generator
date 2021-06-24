@@ -56,6 +56,8 @@ const Collection = () => {
     }
 
     const handleDownloadSubmit = async (values) => {
+        console.log(values)
+
         await imageDownloader.generateZip(values.filters, values.options, progress => {
             setLoadState(progress)
         })

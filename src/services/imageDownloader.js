@@ -43,9 +43,7 @@ const orderByFolder = () => {
         presentsFiltersValues.push(findObjects(folder))
     }
     
-    for(let values of presentsFiltersValues){
-
-    }
+    return presentsFiltersValues
 }
 
 const findObjects = (propName) => {

@@ -344,7 +344,6 @@ export class Imaginator {
         }
 
         const json = canvas.toObject(['selectable', 'lockMovementX', 'lockMovementY', 'id'])
-        console.log(json)
         return json
     }
 

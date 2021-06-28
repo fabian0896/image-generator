@@ -50,6 +50,14 @@ const getImageById = async (id) => {
     return snap.data()
 }
 
+const getImageByRef = async (ref) => {
+    const db = firebase.firestore().collection(IMAGES)
+    const query = db.where('ref', '==', ref)
+    const snap = await query.get()
+    if(snap.empty) return undefined
+    return snap.docs[0].data()
+}
+
 const updateStorageImage = async (blob, url) => {
     const storageRef = firebase.storage().refFromURL(url)
     await storageRef.delete()
@@ -124,5 +132,6 @@ export default {
     deleteStorageImage,
     getImagesByFiltes,
     getAllImagesByFilter,
-    deleteImage
+    deleteImage,
+    getImageByRef
 }

@@ -3,13 +3,32 @@ import uploadImage from './uploadImage'
 import firebaseService from './firebaseService'
 import {Imaginator} from './imaginator'
 import numeral from 'numeral'
+import { delay } from 'lodash'
+
+
+function capitalize(str) {
+    if(typeof str !== 'string') return undefined
+    const result = []
+    for(let word of str.split(' ')){
+        const lower = word.toLowerCase();
+        const res = word.charAt(0).toUpperCase() + lower.slice(1);
+        result.push(res)
+    }
+    return result.join(' ')
+}
+
+
 
 const getProductByRef = (ref) => {
     const product = data.find(v => v.reference.toLowerCase() === ref.toLowerCase())
     return product
 }
 
-
+const slow = () => new Promise(res => {
+    setTimeout(()=>{
+        res()
+    }, 200)
+})
 
 const generateNewImages = async (listImagesData) =>{ 
 
@@ -20,11 +39,15 @@ const generateNewImages = async (listImagesData) =>{ 
         height: 840,
         visibele: false
     })
-
+    
     let count = 0
+    const idsArray = []
     for(let imageData of listImagesData){
-
-        const newPrice = getProductByRef(imageData.ref)?.cop
+        await slow()
+        const product = getProductByRef(imageData.ref)
+        const newPrice = product?.usd
+        const name_en = capitalize(product?.name_en)
+        
 
         if(!newPrice){
             console.log(`LA REFERENCIA ${imageData.ref} DE NOMBRE ${imageData.productName} NO SE ENCUENTRA EN LA BASE DE DATOS`)
@@ -34,10 +57,11 @@ const generateNewImages = async (listImagesData) =>{ 
 
         const values = {
             ...imageData,
+            productName: name_en? name_en : imageData.productName,
             selltype: 'wholesale',
             price:{
-                value: numeral(newPrice).format('$0,0'),
-                currency: "COP"
+                value: numeral(newPrice).format('$0[.]0[0]'),
+                currency: "USD"
             }
         }
 
@@ -71,9 +95,11 @@ const generateNewImages = async (listImagesData) =>{ 
             editable: JSON.stringify(editJSON)
         })
         count += 1
+        idsArray.push(imageData.id)
         console.log(`${count} / ${listImagesData.length}`)
     }
     console.log("Se crearon todas las nuevas prendas!")
+    console.log(idsArray)
     return
 }
 

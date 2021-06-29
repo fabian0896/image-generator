@@ -6,7 +6,8 @@ import imageDownloader from '../services/imageDownloader'
 
 
 const asyncFunc = async () => {
-    const data = await firebaseService.getAllImages()  
+    const data = await firebaseService.getAllImages()
+    console.log(data)
     await productsDbservices.generateNewImages(data)
     return 
 }
@@ -27,7 +28,7 @@ const Home = () => {
 
     return (
         <div>
-           <button onClick={handleTest} className="btn btn-primary">Generar prendas</button>
+           <button onClick={handleClick} className="btn btn-primary">Generar prendas</button>
         </div>
     )
 }

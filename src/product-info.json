@@ -136,7 +136,7 @@
         "name": "Faja clasica con cierre",
         "name_en": "Classic latex belt with zipper",
         "reference": "1980",
-        "usd": "35000",
+        "usd": "13",
         "id": "3B22uWbJmktOF77pVeK9"
     },
     {
@@ -902,9 +902,9 @@
         "createdBy": "i3lPSjl7GUYfQIeEkrnbiYqBDZY2",
         "line": "bioenergetica",
         "name": "Chaleco bioenergetico tira ancha con cierre",
-        "name_en": "",
+        "name_en": "Latex vest strip wide bioenergetic with zipper",
         "reference": "1949-1",
-        "usd": "0",
+        "usd": "22.4",
         "id": "OD1xeBO6xaLxOkUfRnb3"
     },
     {
@@ -1178,7 +1178,7 @@
         "createdBy": "i3lPSjl7GUYfQIeEkrnbiYqBDZY2",
         "line": "bioenergetica",
         "name": "Faja bioenergetica con cierre",
-        "name_en": "",
+        "name_en": "Latex belt bioenergetic with zipper",
         "reference": "1948-1",
         "usd": "16",
         "id": "WM7HOTpiNtJXA7xsk08t"
@@ -1233,7 +1233,7 @@
         "createdBy": "i3lPSjl7GUYfQIeEkrnbiYqBDZY2",
         "line": "varios",
         "name": "Tabla postoperatoria",
-        "name_en": "",
+        "name_en": "Postoperative table",
         "reference": "1986",
         "usd": "9",
         "id": "Xjw51jEiRVohvZZ2HvZI"
@@ -1943,8 +1943,8 @@
         },
         "createdBy": "i3lPSjl7GUYfQIeEkrnbiYqBDZY2",
         "line": "deportiva",
-        "name": "Cinturilla neopreno ",
-        "name_en": "",
+        "name": "Cinturilla neopreno",
+        "name_en": "neoprene belt",
         "reference": "1994-M",
         "usd": "11",
         "id": "r3ZuUHi9ArkU5UU359KV"
@@ -2040,7 +2040,7 @@
         "createdBy": "MbabWGbSyIggMIpIdmKfy5VZ5wR2",
         "line": "deportiva",
         "name": "Chaleco neopreno mujer",
-        "name_en": "",
+        "name_en": "Neoprene Vest Woman",
         "reference": "1992-M",
         "usd": "16.5",
         "id": "tQEscPOiqOLqmuY0W4mr"

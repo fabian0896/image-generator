@@ -350,6 +350,7 @@ export class Imaginator {
     loadFromJSON(json, callback) {
         return new Promise(resolve => {
             this.canvas.clear()
+            this.objects = {}
             this.canvas.loadFromJSON(json, () => {
                 this.canvas.forEachObject(obj => {
                     if(obj.type === 'image'){

@@ -28,7 +28,7 @@ const updateImage = async (values) => {
 }
 
 const getAllImages = async () => {
-    const db = firebase.firestore().collection(IMAGES)
+    const db = firebase.firestore().collection(IMAGES).where("selltype", "==", "retail").where("price.currency", "==", "COP")
     const snap = await db.get()
     const res = snap.docs.map(snap => snap.data())
     return res

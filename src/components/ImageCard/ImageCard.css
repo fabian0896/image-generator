@@ -9,7 +9,9 @@
 
 .ImageCard-container:hover{
     box-shadow: 5px 5px 20px rgba(0, 0, 0, .4);
-    transform: scale(1.01);
+    /*transform: scale(1.01);*/
+    border: 1px solid black;
+    box-sizing: border-box;
 }
 
 .ImageCard-checkbox-container{

@@ -1,11 +1,11 @@
 import algoliasearch from "algoliasearch";
 
+const API_KEY = process.env.REACT_APP_ALGOLIA_API_KEY;
+const APPLICATION_ID = process.env.REACT_APP_APPLICATION_ID;
 
-const client = algoliasearch('KVPTL3YFFM', '1bdc099a5a576d88c49cbc43cd8ca1fa')
-
+const client = algoliasearch(APPLICATION_ID, API_KEY);
 
 const index = client.initIndex('images')
-
 
 const addRecord = async (values) => {
     const { productName, category, price, selltype, id, ref } = values

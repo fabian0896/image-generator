@@ -1,7 +1,7 @@
 import algoliasearch from "algoliasearch";
 
 
-const client = algoliasearch('3J3NJDQ9UX', 'af0c96444245b64033badda50d8cb14a')
+const client = algoliasearch('KVPTL3YFFM', '1bdc099a5a576d88c49cbc43cd8ca1fa')
 
 
 const index = client.initIndex('images')
@@ -41,7 +41,7 @@ const updateRecord = async (values) => {
 
 const testSearch = async () => {
     const result = await index.search("faja", {
-        facetFilters: [
+        facetFilters: [
             ['category:clasica', 'category:metalizada']
         ]
     })
@@ -57,7 +57,7 @@ const search = async (query="", filters={}, limit=true, page=0) => {
     },[])
 
     const searchObject = {
-        facetFilters: filterArray,
+        facetFilters: filterArray,
         page
     }
 
@@ -66,15 +66,16 @@ const search = async (query="", filters={}, limit=true, page=0) => {
     }
 
     const result = await index.search(query, searchObject)
-    if(limit) return result
+    if (limit) return result
     return result.hits
 }
 
-
-export default {
+const algoliaObject = {
     addRecord,
     updateRecord,
     testSearch,
     search,
     deleteRecord
-}
+};
+
+export default algoliaObject;

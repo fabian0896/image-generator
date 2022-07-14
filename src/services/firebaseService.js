@@ -7,7 +7,7 @@ const IMAGES = 'images'
 
 const addImageToDB = async (values) => {
     const db = firebase.firestore().collection(IMAGES)
-    const doc = db.doc()
+    const doc = db.doc(values.id)
 
     const id = doc.id
 
@@ -28,7 +28,11 @@ const updateImage = async (values) => {
 }
 
 const getAllImages = async () => {
-    const db = firebase.firestore().collection(IMAGES).where("selltype", "==", "retail").where("price.currency", "==", "COP")
+    const db = firebase.firestore()
+        .collection(IMAGES)
+        .where("selltype", "==", "wholesale")
+        .where("price.currency", "==", "COP")
+        .limit(2);
     const snap = await db.get()
     const res = snap.docs.map(snap => snap.data())
     return res

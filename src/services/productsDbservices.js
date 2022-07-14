@@ -1,4 +1,5 @@
 import data from '../product-info.json'
+import newPormayorPrices from '../new_prices_pormayor.json';
 import uploadImage from './uploadImage'
 import firebaseService from './firebaseService'
 import {Imaginator} from './imaginator'
@@ -30,7 +31,7 @@ const slow = () => new Promise(res => {
     }, 200)
 })
 
-const generateNewImages = async (listImagesData) =>{ 
+const generateNewImages = async (listImagesData) =>{
 
     const canvas = document.createElement('canvas')
 
@@ -44,10 +45,10 @@ const generateNewImages = async (listImagesData) =>{ 
     const idsArray = []
     for(let imageData of listImagesData){
         await slow()
-        const product = getProductByRef(imageData.ref)
-        const newPrice = product?.usd
-        const name_en = capitalize(product?.name_en)
-        
+        // const product =  getProductByRef(imageData.ref)
+        //const newPrice = product?.usd
+        // const name_en = capitalize(product?.name_en)
+        const newPrice = newPormayorPrices[imageData.ref];
 
         if(!newPrice){
             console.log(`LA REFERENCIA ${imageData.ref} DE NOMBRE ${imageData.productName} NO SE ENCUENTRA EN LA BASE DE DATOS`)
@@ -57,11 +58,11 @@ const generateNewImages = async (listImagesData) =>{ 
 
         const values = {
             ...imageData,
-            productName: name_en? name_en : imageData.productName,
-            selltype: 'wholesale',
+            // productName: name_en? name_en : imageData.productName,
+            // selltype: 'wholesale',
             price:{
-                value: numeral(newPrice).format('$0[.]0[0]'),
-                currency: "USD"
+               value: numeral(newPrice).format('$0,0'),
+               currency: "COP"
             }
         }
 
@@ -79,7 +80,6 @@ const generateNewImages = async (listImagesData) =>{ 
         
         //Consigo el url de la imagen del canvas
         const images = await imaginator.toDataURL({blobMode: true})
-         
         // hay que subir la imagen a firestore para descargas en el futuro
         
         const imagesUrls = {}
@@ -87,7 +87,7 @@ const generateNewImages = async (listImagesData) =>{ 
             const downloadUrl = await uploadImage(images[size] ,'priceImage')
             imagesUrls[size] = downloadUrl
         }
-    
+
         //agrego todos los datos a la Base de Datos
         await firebaseService.addImageToDB({
             ...values,
